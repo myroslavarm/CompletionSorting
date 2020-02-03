@@ -64,10 +64,9 @@ DataPreprocessing >> tokenFrequencies [
 	| tokens cleanedTokens counts |
 	counts := OrderedCollection new.
 	cleanedTokens := self returnProcessedData.
-	tokens := cleanedTokens column: 'tokens'.
-	tokens := tokens collect: [ :each | each substrings: self tokenSeparators ].
-	tokens := tokens asArray.
-	^ (tokens flatCollect: #yourself) asBag valuesAndCounts keysAndValuesDo: [ :key :value | counts add: { key . value }  ]
+	tokens := (cleanedTokens column: 'tokens') asArray.
+	(tokens flatCollect: #yourself) asBag valuesAndCounts keysAndValuesDo: [ :key :value | counts add: { key . value }  ].
+	^ counts
 ]
 
 { #category : #separator }
@@ -87,10 +86,11 @@ DataPreprocessing >> tokensFile [
 
 { #category : #processing }
 DataPreprocessing >> writeFile [
-	| data |
+	| data stream |
 	data := self tokenFrequencies.
-	self frequenciesFile writeStreamDo: [ :writeStream |
-		(NeoCSVWriter on: writeStream)
- 			writeHeader: #(key value);
-			nextPutAll: data ]
+	stream := self frequenciesFile writeStream.
+	(NeoCSVWriter on: stream)
+                nextPut: #(key value);
+					nextPutAll: data.
+	stream close
 ]
