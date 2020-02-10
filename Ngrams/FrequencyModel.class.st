@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #utilities }
-FrequencyModel >> frequenciesData [
+FrequencyModel >> frequencies [
 	| frequencies |
 	frequencies := self readFile.
 	^ frequencies 
