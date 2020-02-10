@@ -22,14 +22,23 @@ FrequencyModel >> frequenciesFile [
 
 { #category : #utilities }
 FrequencyModel >> readFile [
-
-	^ DataFrame readFromCsv: self frequenciesFile
+	| frequencies dict |
+	frequencies := self frequenciesFile readStreamDo: [ :readStream |
+		(NeoCSVReader on: readStream)
+			skipHeader;
+			addField;
+			addIntegerField;
+			upToEnd ].
+	dict := Dictionary new.
+	frequencies do: [ :each | dict at: each first put: each second ].
+	^ dict 
 ]
 
 { #category : #utilities }
 FrequencyModel >> sortResults [
 	| data sorted |
 	data := self readFile.
-	sorted := data sorted: [ :a :b | (a at: 'value') > (b at: 'value') ].
-	^ sorted
+	sorted := (data associations asSortedCollection: [:x :y | x value > y value]) 
+            collect: [ :assoc | assoc key -> assoc value ].
+	^ sorted asOrderedDictionary
 ]
