@@ -5,7 +5,7 @@ Class {
 		'data',
 		'preprocessor'
 	],
-	#category : #'TokenDataPreprocessing-Tests'
+	#category : #'Ngrams-Tests'
 }
 
 { #category : #running }

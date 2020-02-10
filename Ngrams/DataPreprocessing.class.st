@@ -4,7 +4,7 @@ class for cleaning the source code token data & getting token frequencies
 Class {
 	#name : #DataPreprocessing,
 	#superclass : #Object,
-	#category : #TokenDataPreprocessing
+	#category : #'Ngrams-DataProcessing'
 }
 
 { #category : #utilities }
