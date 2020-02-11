@@ -19,7 +19,7 @@ FrequencyCompletionSorter class >> kind [
 { #category : #sorting }
 FrequencyCompletionSorter >> initialize [
 	sorter := FrequencySorter new.
-	sorter frequencies: FrequencyModel new
+	sorter frequencies: FrequencyModel new frequencies
 ]
 
 { #category : #sorting }
