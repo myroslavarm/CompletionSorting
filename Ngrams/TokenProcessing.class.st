@@ -2,28 +2,28 @@
 class for cleaning the source code token data & getting token frequencies
 "
 Class {
-	#name : #DataPreprocessing,
+	#name : #TokenProcessing,
 	#superclass : #Object,
-	#category : #'Ngrams-DataProcessing'
+	#category : #'Ngrams-TokenProcessing'
 }
 
 { #category : #utilities }
-DataPreprocessing >> dataFolder [
-	^ 'D:/INRIA/data' asFileReference.
+TokenProcessing >> dataFolder [
+	^ 'pharo-local/iceberg/myroslavarm/CompletionSorting/data' asFileReference
 ]
 
 { #category : #utilities }
-DataPreprocessing >> emptyStringPlaceholder [
+TokenProcessing >> emptyStringPlaceholder [
 	^ '<empty>'
 ]
 
 { #category : #utilities }
-DataPreprocessing >> frequenciesFile [
+TokenProcessing >> frequenciesFile [
 	^ self dataFolder / 'frequencies.csv'
 ]
 
 { #category : #processing }
-DataPreprocessing >> insertEmptyStringAndCommenPlaceholder: tokensDataFrame [
+TokenProcessing >> insertEmptyStringAndCommenPlaceholder: tokensDataFrame [
 	tokensDataFrame toColumn: 'tokens' applyElementwise: [ :each |
 		each
 			copyReplaceAll: (String tab, String tab)
@@ -31,18 +31,18 @@ DataPreprocessing >> insertEmptyStringAndCommenPlaceholder: tokensDataFrame [
 ]
 
 { #category : #utilities }
-DataPreprocessing >> readFile [
+TokenProcessing >> readFile [
 	^ DataFrame readFromCsv: self tokensFile
 ]
 
 { #category : #processing }
-DataPreprocessing >> rejectInvalidTokens: tokensDataFrame [
+TokenProcessing >> rejectInvalidTokens: tokensDataFrame [
 	^ tokensDataFrame reject: [ :row |
 		(row at: 'tokens') size ~= (row at: 'tokenTypes') size ]
 ]
 
 { #category : #processing }
-DataPreprocessing >> returnProcessedData [
+TokenProcessing >> returnProcessedData [
 	| tokensDataFrame |
 	tokensDataFrame := self readFile.
 	self insertEmptyStringAndCommenPlaceholder: tokensDataFrame.
@@ -51,7 +51,7 @@ DataPreprocessing >> returnProcessedData [
 ]
 
 { #category : #processing }
-DataPreprocessing >> splitTokensAndTokenTypes: tokensDataFrame [
+TokenProcessing >> splitTokensAndTokenTypes: tokensDataFrame [
 	tokensDataFrame toColumn: 'tokens' applyElementwise: [ :each |
 		each substrings: self tokenSeparators  ].
 	
@@ -60,7 +60,7 @@ DataPreprocessing >> splitTokensAndTokenTypes: tokensDataFrame [
 ]
 
 { #category : #transforming }
-DataPreprocessing >> tokenFrequencies [
+TokenProcessing >> tokenFrequencies [
 	| tokens cleanedTokens counts |
 	counts := OrderedCollection new.
 	cleanedTokens := self returnProcessedData.
@@ -70,22 +70,22 @@ DataPreprocessing >> tokenFrequencies [
 ]
 
 { #category : #separator }
-DataPreprocessing >> tokenSeparators [
+TokenProcessing >> tokenSeparators [
 	^ { Character tab }
 ]
 
 { #category : #separator }
-DataPreprocessing >> tokenTypeSeparators [
+TokenProcessing >> tokenTypeSeparators [
 	^ { Character space }
 ]
 
 { #category : #utilities }
-DataPreprocessing >> tokensFile [
+TokenProcessing >> tokensFile [
 	^ self dataFolder / 'tokens.csv'
 ]
 
 { #category : #processing }
-DataPreprocessing >> writeFile [
+TokenProcessing >> writeFile [
 	| data stream |
 	data := self tokenFrequencies.
 	stream := self frequenciesFile writeStream.

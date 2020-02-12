@@ -2,26 +2,26 @@
 I'm a class for sorting tokn frequencies
 "
 Class {
-	#name : #FrequencyModel,
+	#name : #FrequencyTable,
 	#superclass : #Object,
-	#category : #'Ngrams-FrequencyModel'
+	#category : #'Ngrams-FrequencyTable'
 }
 
 { #category : #utilities }
-FrequencyModel >> frequencies [
+FrequencyTable >> frequencies [
 	| frequencies |
 	frequencies := self readFile.
 	^ frequencies 
 ]
 
 { #category : #utilities }
-FrequencyModel >> frequenciesFile [
+FrequencyTable >> frequenciesFile [
 
-	^ DataPreprocessing new dataFolder / 'frequencies.csv'
+	^ TokenProcessing new dataFolder / 'frequencies.csv'
 ]
 
 { #category : #utilities }
-FrequencyModel >> readFile [
+FrequencyTable >> readFile [
 	| frequencies dict |
 	frequencies := self frequenciesFile readStreamDo: [ :readStream |
 		(NeoCSVReader on: readStream)
@@ -35,7 +35,7 @@ FrequencyModel >> readFile [
 ]
 
 { #category : #utilities }
-FrequencyModel >> sortResults [
+FrequencyTable >> sortResults [
 	| data sorted |
 	data := self readFile.
 	sorted := (data associations asSortedCollection: [:x :y | x value > y value]) 

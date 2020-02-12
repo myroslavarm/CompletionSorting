@@ -1,5 +1,5 @@
 Class {
-	#name : #DataPreprocessingTest,
+	#name : #TokenProcessingTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'data',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #running }
-DataPreprocessingTest >> setUp [
+TokenProcessingTest >> setUp [
 	| tokens tokenTypes |
 	
 	tokens := #(
@@ -24,11 +24,11 @@ DataPreprocessingTest >> setUp [
 		withColumns: { tokens . tokenTypes }
 		columnNames: #(tokens tokenTypes).
 		
-	preprocessor := DataPreprocessing new.
+	preprocessor := TokenProcessing new.
 ]
 
 { #category : #tests }
-DataPreprocessingTest >> testSplitTokensAndTokenTypes [
+TokenProcessingTest >> testSplitTokensAndTokenTypes [
 	| expectedTokens expectedTokenTypes expected |
 	
 	expectedTokens := #(
