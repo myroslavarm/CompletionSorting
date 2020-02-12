@@ -4,8 +4,28 @@ I'm a class for sorting tokn frequencies
 Class {
 	#name : #FrequencyTable,
 	#superclass : #Object,
+	#classVars : [
+		'UniqueInstance'
+	],
 	#category : #'Ngrams-FrequencyTable'
 }
+
+{ #category : #'instance creation' }
+FrequencyTable class >> new [
+	self error: 'FrequencyTable is a singleton -- send uniqueInstance instead'
+]
+
+{ #category : #'instance creation' }
+FrequencyTable class >> reset [ 
+	UniqueInstance := nil
+]
+
+{ #category : #'instance creation' }
+FrequencyTable class >> uniqueInstance [
+
+	UniqueInstance ifNil: [ UniqueInstance := self basicNew ].
+	^ UniqueInstance
+]
 
 { #category : #utilities }
 FrequencyTable >> frequencies [
