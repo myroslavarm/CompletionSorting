@@ -70,6 +70,14 @@ TokenProcessing >> tokenFrequencies [
 ]
 
 { #category : #separator }
+TokenProcessing >> tokenFrequenciesShortened [
+	| counts |
+	counts := self tokenFrequencies .
+	counts := counts reject: [ :each | each second < 10 ].
+	^ counts
+]
+
+{ #category : #separator }
 TokenProcessing >> tokenSeparators [
 	^ { Character tab }
 ]
@@ -87,7 +95,7 @@ TokenProcessing >> tokensFile [
 { #category : #processing }
 TokenProcessing >> writeFile [
 	| data stream |
-	data := self tokenFrequencies.
+	data := self tokenFrequenciesShortened.
 	stream := self frequenciesFile writeStream.
 	(NeoCSVWriter on: stream)
                 nextPut: #(key value);
