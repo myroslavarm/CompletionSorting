@@ -16,6 +16,11 @@ FrequencyTable class >> new [
 ]
 
 { #category : #'instance creation' }
+FrequencyTable class >> new: aClass [
+	self error: 'FrequencyTable is a singleton -- send uniqueInstance instead'
+]
+
+{ #category : #'instance creation' }
 FrequencyTable class >> reset [ 
 	UniqueInstance := nil
 ]
