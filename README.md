@@ -6,4 +6,8 @@ implements separate sorting strategies for Pharo code completion
 - should already have the data files fetched with this repo
 
 ### Sorting Strategies Info
-- so far we have a Frequency based sorter (speed improvements WIP)
+- so far we have a Frequency based sorter (now should be fast!)
+
+### Testing for yourself
+- Settings -> Code Completion -> Sorter
+- choose `FrequencyCompletionSorter`
