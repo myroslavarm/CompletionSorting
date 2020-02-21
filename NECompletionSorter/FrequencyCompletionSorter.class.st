@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'sorter'
 	],
-	#category : #NECompletionSorter
+	#category : #'NECompletionSorter-Unigram'
 }
 
 { #category : #description }

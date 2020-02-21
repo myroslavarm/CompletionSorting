@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'frequencies'
 	],
-	#category : #NECompletionSorter
+	#category : #'NECompletionSorter-Unigram'
 }
 
 { #category : #accessing }
