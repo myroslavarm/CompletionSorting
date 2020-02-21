@@ -1,5 +1,5 @@
 "
-I'm a class for sorting tokn frequencies
+I'm a class for getting token frequencies from file
 "
 Class {
 	#name : #FrequencyTable,
@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'UniqueInstance'
 	],
-	#category : #'Ngrams-FrequencyTable'
+	#category : #'Ngrams-DataExtraction'
 }
 
 { #category : #'instance creation' }
@@ -61,6 +61,7 @@ FrequencyTable >> readFile [
 
 { #category : #utilities }
 FrequencyTable >> sortResults [
+	"this is not used"
 	| data sorted |
 	data := self readFile.
 	sorted := (data associations asSortedCollection: [:x :y | x value > y value]) 
