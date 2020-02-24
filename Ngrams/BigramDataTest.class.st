@@ -2,8 +2,9 @@ Class {
 	#name : #BigramDataTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'data',
-		'handler'
+		'handler',
+		'dataForWord',
+		'dataForPhrase'
 	],
 	#category : #'Ngrams-Tests'
 }
@@ -11,9 +12,28 @@ Class {
 { #category : #running }
 BigramDataTest >> setUp [
 	super setUp.
-	data := Dictionary newFrom: {'Object' -> 7. 'new' -> 3. 'hello' -> 2. 'initialize' -> 4}.
+	dataForWord := Dictionary newFrom: {'Object' -> 7. 'new' -> 3. 'hello' -> 2. 'initialize' -> 4}.
+	dataForPhrase := Dictionary newFrom: {'Object new' -> 7. 'Object newSubclass' -> 3. 'Object hello' -> 0. 'Object instSpec' -> 1}.
 	handler := BigramData new
 
+]
+
+{ #category : #running }
+BigramDataTest >> testingGettingPhraseFrequency [
+	| phrase actual expected |
+	phrase := 'Object new'.
+	expected := 7.
+	actual := handler getFrequencyOf: phrase from: dataForPhrase.
+	self assert: actual equals: expected
+]
+
+{ #category : #running }
+BigramDataTest >> testingGettingPhraseFrequencyIfPhraseNotInTable [
+	| phrase actual expected |
+	phrase := 'Object badoom'.
+	expected := 0.
+	actual := handler getFrequencyOf: phrase from: dataForPhrase.
+	self assert: actual equals: expected
 ]
 
 { #category : #running }
@@ -21,7 +41,7 @@ BigramDataTest >> testingGettingWordFrequency [
 	| word actual expected |
 	word := 'hello'.
 	expected := 2.
-	actual := handler getFrequencyOf: word from: data.
+	actual := handler getFrequencyOf: word from: dataForWord.
 	self assert: actual equals: expected
 ]
 
@@ -30,6 +50,6 @@ BigramDataTest >> testingGettingWordFrequencyIfWordNotInTable [
 	| word actual expected |
 	word := 'goodbye'.
 	expected := 0.
-	actual := handler getFrequencyOf: word from: data.
+	actual := handler getFrequencyOf: word from: dataForWord.
 	self assert: actual equals: expected
 ]
