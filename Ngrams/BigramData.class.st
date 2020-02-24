@@ -11,3 +11,15 @@ Class {
 	#superclass : #Object,
 	#category : #'Ngrams-DataExtraction'
 }
+
+{ #category : #'accessing - data' }
+BigramData >> getFrequencyOf: aWord [
+	| data |
+	data := FrequencyTable uniqueInstance frequencies.
+	^ self getFrequencyOf: aWord from: data
+]
+
+{ #category : #'accessing - data' }
+BigramData >> getFrequencyOf: aWord from: aTable [
+	^ (aTable at: aWord ifAbsent: 0)
+]
