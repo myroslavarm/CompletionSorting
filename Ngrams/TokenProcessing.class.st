@@ -7,6 +7,22 @@ Class {
 	#category : #'Ngrams-DataExtraction'
 }
 
+{ #category : #transforming }
+TokenProcessing >> bigramFrequencies [
+	| tokens cleanedTokens counts |
+	counts := OrderedCollection new.
+	cleanedTokens := self returnProcessedData.
+	tokens := (cleanedTokens column: 'tokens') asArray.
+	tokens do: [ :each | each overlappingPairsDo: [ :one :two | counts add: { one . two } ] ].
+	counts := counts collect: [ :each | each first, ' ', each second ].
+	^ (counts asBag valuesAndCounts) associations sort: #value descending
+]
+
+{ #category : #utilities }
+TokenProcessing >> bigramFrequenciesFile [
+	^ self dataFolder / 'bigrams.csv'
+]
+
 { #category : #utilities }
 TokenProcessing >> dataFolder [
 	^ 'pharo-local/iceberg/myroslavarm/CompletionSorting/data' asFileReference
