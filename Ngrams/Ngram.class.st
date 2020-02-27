@@ -1,3 +1,6 @@
+"
+I handle the ngrams
+"
 Class {
 	#name : #Ngram,
 	#superclass : #Object,
