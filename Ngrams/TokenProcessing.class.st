@@ -20,7 +20,7 @@ TokenProcessing >> bigramFrequencies [
 
 { #category : #utilities }
 TokenProcessing >> bigramFrequenciesFile [
-	^ self dataFolder / 'bigrams.csv'
+	^ self dataFolder / 'bigrams.json'
 ]
 
 { #category : #separator }
@@ -131,13 +131,10 @@ TokenProcessing >> tokensFile [
 
 { #category : #processing }
 TokenProcessing >> writeBigramFile [
-	| data stream |
+	| data |
 	data := self bigramFrequenciesShortened.
-	stream := self bigramFrequenciesFile writeStream.
-	(NeoCSVWriter on: stream)
-                nextPut: #(key value);
-					nextPutAll: data.
-	stream close
+	self bigramFrequenciesFile writeStreamDo: [ :writeStream |
+		STONJSON put: data onStream: writeStream ]
 ]
 
 { #category : #processing }

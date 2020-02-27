@@ -13,6 +13,19 @@ Class {
 }
 
 { #category : #'accessing - data' }
+BigramData >> bigramFrequenciesFile [
+
+	^ TokenProcessing new dataFolder / 'bigrams.json'
+]
+
+{ #category : #'accessing - data' }
+BigramData >> bigrams [
+	| bigrams |
+	bigrams := self readFile.
+	^ bigrams 
+]
+
+{ #category : #'accessing - data' }
 BigramData >> getFrequencyOf: aWord [
 	| data |
 	data := FrequencyTable uniqueInstance frequencies.
@@ -22,4 +35,13 @@ BigramData >> getFrequencyOf: aWord [
 { #category : #'accessing - data' }
 BigramData >> getFrequencyOf: aWord from: aTable [
 	^ (aTable at: aWord ifAbsent: 0)
+]
+
+{ #category : #'accessing - data' }
+BigramData >> readFile [
+	| bigrams |
+	bigrams := self bigramFrequenciesFile readStreamDo: [ :readStream |
+		STONJSON fromStream: readStream ].
+	^ bigrams
+	
 ]
