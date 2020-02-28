@@ -15,7 +15,7 @@ Class {
 { #category : #'accessing - data' }
 BigramData >> bigramFrequenciesFile [
 
-	^ TokenProcessing new dataFolder / 'bigrams.json'
+	^ TokenProcessing dataFolder / 'bigrams.json'
 ]
 
 { #category : #'accessing - data' }

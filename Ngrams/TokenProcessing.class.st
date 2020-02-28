@@ -7,6 +7,11 @@ Class {
 	#category : #'Ngrams-DataExtraction'
 }
 
+{ #category : #utilities }
+TokenProcessing class >> dataFolder [
+	^ 'pharo-local/iceberg/myroslavarm/CompletionSorting/data' asFileReference
+]
+
 { #category : #transforming }
 TokenProcessing >> bigramFrequencies [
 	| tokens cleanedTokens counts |
@@ -20,7 +25,7 @@ TokenProcessing >> bigramFrequencies [
 
 { #category : #utilities }
 TokenProcessing >> bigramFrequenciesFile [
-	^ self dataFolder / 'bigrams.json'
+	^ self class dataFolder / 'bigrams.json'
 ]
 
 { #category : #separator }
@@ -32,18 +37,13 @@ TokenProcessing >> bigramFrequenciesShortened [
 ]
 
 { #category : #utilities }
-TokenProcessing >> dataFolder [
-	^ 'pharo-local/iceberg/myroslavarm/CompletionSorting/data' asFileReference
-]
-
-{ #category : #utilities }
 TokenProcessing >> emptyStringPlaceholder [
 	^ '<empty>'
 ]
 
 { #category : #utilities }
 TokenProcessing >> frequenciesFile [
-	^ self dataFolder / 'frequencies.csv'
+	^ self class dataFolder / 'frequencies.csv'
 ]
 
 { #category : #processing }
@@ -126,7 +126,7 @@ TokenProcessing >> tokenTypeSeparators [
 
 { #category : #utilities }
 TokenProcessing >> tokensFile [
-	^ self dataFolder / 'tokens.csv'
+	^ self class dataFolder / 'tokens.csv'
 ]
 
 { #category : #processing }

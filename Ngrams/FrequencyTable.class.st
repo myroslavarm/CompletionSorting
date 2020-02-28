@@ -42,7 +42,7 @@ FrequencyTable >> frequencies [
 { #category : #utilities }
 FrequencyTable >> frequenciesFile [
 
-	^ TokenProcessing new dataFolder / 'frequencies.csv'
+	^ TokenProcessing dataFolder / 'frequencies.csv'
 ]
 
 { #category : #utilities }
