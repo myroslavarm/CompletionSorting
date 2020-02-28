@@ -20,7 +20,7 @@ TokenProcessing >> bigramFrequencies [
 	tokens := (cleanedTokens column: 'tokens') asArray.
 	tokens do: [ :each | each overlappingPairsDo: [ :one :two | counts add: { one . two } ] ].
 	counts := counts collect: [ :each | each first, ' ', each second ].
-	^ ((counts asBag valuesAndCounts) associations sort: #value descending) asOrderedDictionary
+	^ counts asBag valuesAndCounts
 ]
 
 { #category : #utilities }
