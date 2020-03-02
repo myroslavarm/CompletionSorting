@@ -1,11 +1,16 @@
 # CompletionSorting
 [![Build Status](https://travis-ci.org/myroslavarm/CompletionSorting.svg?branch=master)](https://travis-ci.org/myroslavarm/CompletionSorting)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](LICENSE)
-[![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo version](https://img.shields.io/badge/Pharo-9.0-%23aac9ff.svg)](https://pharo.org/download)
 
 ## Setup Info
-- needs DataFrame (installation script [here](https://github.com/PolyMathOrg/DataFrame)) and NeoCSV (installation script [here](https://github.com/svenvc/NeoCSV)) dependencies loaded
-- should already have the data files fetched with this repo
+In order to load the repo and its dependencies, execute:
+```{Smalltalk}
+Metacello new
+  baseline: 'CompletionSorting';
+  repository: 'github://myroslavarm/CompletionSorting/';
+  load.
+```
 
 ## Unigram Sorting
 ### Sorting Strategies Info
