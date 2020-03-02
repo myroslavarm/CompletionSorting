@@ -17,7 +17,7 @@ BaselineOfCompletionSorting >> baselineOf: spec [
 			baseline: 'GitBridge' with: [ spec
 				repository: 'github://jecisc/GitBridge:v1.x.x/src' ].
 		spec
-			package: 'Ngrams';
+			package: 'Ngrams' with: [ spec requires: #(GitBridge) ];
 			package: 'NECompletionSorter' with: [ spec requires: #(Ngrams) ];
 			package: 'NECompletionSorter-Tests' with: [ spec requires: #(NECompletionSorter) ] ]
 ]
