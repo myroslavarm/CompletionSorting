@@ -8,6 +8,6 @@ SmalltalkCISpec {
     }
   ],
   #testing : {
-    #packages : [ 'NECompletionSorter', 'NECompletionSorter-Tests', 'Ngrams' ]
+    #packages : [ 'CompletionSorting*' ]
     }  
 }
