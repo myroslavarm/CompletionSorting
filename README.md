@@ -1,5 +1,7 @@
 # CompletionSorting
-implements separate sorting strategies for Pharo code completion
+[![Build Status](https://travis-ci.org/myroslavarm/CompletionSorting.svg?branch=master)](https://travis-ci.org/myroslavarm/CompletionSorting)
+[![License](https://img.shields.io/badge/license-GPL-blue.svg)](LICENSE)
+[![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
 
 ## Setup Info
 - needs DataFrame (installation script [here](https://github.com/PolyMathOrg/DataFrame)) and NeoCSV (installation script [here](https://github.com/svenvc/NeoCSV)) dependencies loaded
