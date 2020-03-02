@@ -9,7 +9,7 @@ Class {
 
 { #category : #utilities }
 TokenProcessing class >> dataFolder [
-	^ 'pharo-local/iceberg/myroslavarm/CompletionSorting/data' asFileReference
+	^ (FileSystem workingDirectory / 'pharo-local/iceberg/myroslavarm/CompletionSorting/data') asFileReference
 ]
 
 { #category : #transforming }
