@@ -2,7 +2,7 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'CompletionSorting',
-      #directory : '',
+      #directory : '.',
       #onWarningLog : true,
       #platforms : [ #pharo ]
     }
