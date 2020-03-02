@@ -1,4 +1,8 @@
 # CompletionSorting
+[![Build Status](https://travis-ci.com/myroslavarm/CompletionSorting.svg?branch=master)](https://travis-ci.org/myroslavarm/CompletionSorting/)
+[![License](https://img.shields.io/badge/license-GPL-blue.svg)](LICENSE)
+[![Pharo version](https://img.shields.io/badge/Pharo-7.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
 implements separate sorting strategies for Pharo code completion
 
 ## Setup Info
