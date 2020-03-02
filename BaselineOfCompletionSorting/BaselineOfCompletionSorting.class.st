@@ -13,7 +13,9 @@ BaselineOfCompletionSorting >> baselineOf: spec [
 			baseline: 'NeoCSV' with: [ spec
 				repository: 'github://svenvc/NeoCSV:master' ];
 			baseline: 'DataFrame' with: [ spec
-				repository: 'github://PolyMathOrg/DataFrame:v2.0/src' ].
+				repository: 'github://PolyMathOrg/DataFrame:v2.0/src' ];
+			baseline: 'GitBridge' with: [ spec
+				repository: 'github://jecisc/GitBridge:v1.x.x/src' ].
 		spec
 			package: 'Ngrams';
 			package: 'NECompletionSorter' with: [ spec requires: #(Ngrams) ];
