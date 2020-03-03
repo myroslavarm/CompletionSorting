@@ -1,3 +1,6 @@
+"
+this is to have access to files in the repository when testing using the CI
+"
 Class {
 	#name : #MyProjectBridge,
 	#superclass : #GitBridge,

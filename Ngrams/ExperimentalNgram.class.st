@@ -2,7 +2,7 @@
 I handle the ngrams
 "
 Class {
-	#name : #Ngram,
+	#name : #ExperimentalNgram,
 	#superclass : #Object,
 	#instVars : [
 		'words',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-Ngram class >> fromString: aString [
+ExperimentalNgram class >> fromString: aString [
 	| substrings words frequency |
 	substrings := aString substrings.
 	words := substrings copyFrom: 1 to: substrings size - 1.
@@ -22,27 +22,27 @@ Ngram class >> fromString: aString [
 ]
 
 { #category : #'as yet unclassified' }
-Ngram class >> words: aCollectionOfWords frequency: aNumber [ 
+ExperimentalNgram class >> words: aCollectionOfWords frequency: aNumber [ 
 	^ self new initializeWords: aCollectionOfWords frequency: aNumber
 ]
 
 { #category : #converting }
-Ngram >> asString [
+ExperimentalNgram >> asString [
 	^ ' ' join: (words copyWith: frequency asString).
 ]
 
 { #category : #accessing }
-Ngram >> frequency [
+ExperimentalNgram >> frequency [
 	^ frequency
 ]
 
 { #category : #initialization }
-Ngram >> initializeWords: aCollectionOfWords frequency: aNumber [ 
+ExperimentalNgram >> initializeWords: aCollectionOfWords frequency: aNumber [ 
 	words := aCollectionOfWords.
 	frequency := aNumber
 ]
 
 { #category : #accessing }
-Ngram >> words [
+ExperimentalNgram >> words [
 	^ words
 ]

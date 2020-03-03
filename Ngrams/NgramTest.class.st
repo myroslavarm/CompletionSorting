@@ -13,7 +13,7 @@ NgramTest >> setUp [
 	super setUp.
 	data := BigramData new bigrams.
 	ngrams := data associations collect: [ :each |
-		Ngram words: each key substrings frequency: each value ]
+		ExperimentalNgram words: each key substrings frequency: each value ]
 
 ]
 
