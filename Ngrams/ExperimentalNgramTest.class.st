@@ -1,5 +1,5 @@
 Class {
-	#name : #NgramTest,
+	#name : #ExperimentalNgramTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'data',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #running }
-NgramTest >> setUp [
+ExperimentalNgramTest >> setUp [
 	super setUp.
 	data := BigramData new bigrams.
 	ngrams := data associations collect: [ :each |
@@ -18,7 +18,7 @@ NgramTest >> setUp [
 ]
 
 { #category : #tests }
-NgramTest >> testSelectionByFirstWord [
+ExperimentalNgramTest >> testSelectionByFirstWord [
 	| continuations result expected actual |
 	continuations := ngrams select: [ :each | each words first = 'self' ].
 	continuations sort: [ :a :b | a frequency > b frequency ].
@@ -29,7 +29,7 @@ NgramTest >> testSelectionByFirstWord [
 ]
 
 { #category : #tests }
-NgramTest >> testSelectionByPrefixInSecondWord [
+ExperimentalNgramTest >> testSelectionByPrefixInSecondWord [
 	| assoc selection |
 	assoc := data associations collect: [ :each | each key substrings -> each value ].
 	selection := assoc select: [ :each | (each key first = 'super') and:
