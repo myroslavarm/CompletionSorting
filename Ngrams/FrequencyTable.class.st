@@ -46,6 +46,11 @@ FrequencyTable >> frequenciesFile [
 ]
 
 { #category : #utilities }
+FrequencyTable >> frequencyFor: aWord [
+	^ (self frequencies at: aWord ifAbsent: 0.001) asNumber
+]
+
+{ #category : #utilities }
 FrequencyTable >> readFile [
 	| frequencies dict |
 	frequencies := self frequenciesFile readStreamDo: [ :readStream |

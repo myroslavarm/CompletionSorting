@@ -26,6 +26,11 @@ BigramData >> bigrams [
 ]
 
 { #category : #'accessing - data' }
+BigramData >> frequencyFor: aPhrase [
+	^ (self bigrams at: aPhrase ifAbsent: 0.001) asNumber
+]
+
+{ #category : #'accessing - data' }
 BigramData >> getFrequencyOf: aWord [
 	| data |
 	data := FrequencyTable uniqueInstance frequencies.
