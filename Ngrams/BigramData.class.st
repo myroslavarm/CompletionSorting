@@ -39,7 +39,7 @@ BigramData >> getFrequencyOf: aWord [
 
 { #category : #'accessing - data' }
 BigramData >> getFrequencyOf: aWord from: aTable [
-	^ (aTable at: aWord ifAbsent: 0)
+	^ (aTable at: aWord ifAbsent: 0.1)
 ]
 
 { #category : #'accessing - data' }

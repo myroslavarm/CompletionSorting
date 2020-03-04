@@ -5,15 +5,21 @@ Class {
 	#name : #BigramCompletionSorter,
 	#superclass : #CompletionSorter,
 	#instVars : [
-		'sorter'
+		'sorter',
+		'history',
+		'ngram',
+		'token',
+		'pairs'
 	],
 	#category : #'NECompletionSorter-Bigram'
 }
 
 { #category : #initialization }
 BigramCompletionSorter >> initialize [
-	sorter := FrequencySorter new.
-	sorter frequencies: BigramData new bigrams
+	sorter := BigramSorter new.
+	"history := FrequencyTable uniqueInstance frequencyFor: token.
+	ngram := BigramData new frequencyFor: pairs.
+	sorter bigrams: (ngram / history)"
 ]
 
 { #category : #sorting }
