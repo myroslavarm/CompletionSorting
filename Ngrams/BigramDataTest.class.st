@@ -31,7 +31,7 @@ BigramDataTest >> testingGettingPhraseFrequency [
 BigramDataTest >> testingGettingPhraseFrequencyIfPhraseNotInTable [
 	| phrase actual expected |
 	phrase := 'Object badoom'.
-	expected := 0.
+	expected := 0.1.
 	actual := handler getFrequencyOf: phrase from: dataForPhrase.
 	self assert: actual equals: expected
 ]
@@ -49,7 +49,7 @@ BigramDataTest >> testingGettingWordFrequency [
 BigramDataTest >> testingGettingWordFrequencyIfWordNotInTable [
 	| word actual expected |
 	word := 'goodbye'.
-	expected := 0.
+	expected := 0.1.
 	actual := handler getFrequencyOf: word from: dataForWord.
 	self assert: actual equals: expected
 ]
