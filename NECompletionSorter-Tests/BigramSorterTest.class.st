@@ -3,8 +3,6 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'sorter',
-		'history',
-		'collection',
 		'frequency',
 		'bigramFrequency'
 	],
@@ -15,9 +13,7 @@ Class {
 BigramSorterTest >> setUp [
 	super setUp.
 	sorter := BigramSorter new.
-	
-	history := 'apple'.
-	collection := { 'pie' . 'strudel' . 'house' . 'juice' . 'dream' }.
+
 	frequency := { 'apple'->8 . 'hello'->10 . 'never'->5 } asDictionary.
 	bigramFrequency := { 'apple pie'->3 . 'apple strudel'->4 . 'apple juice'->3} asDictionary.
 	
@@ -25,10 +21,27 @@ BigramSorterTest >> setUp [
 
 { #category : #tests }
 BigramSorterTest >> testSort [
-	| actual expected |
+	| history collection actual expected |
+	history := 'apple'.
+	collection := { 'pie' . 'strudel' . 'house' . 'juice' . 'dream' }.
+	
 	sorter getHistory: history andCollection: collection.
 	sorter probabilities: (sorter getProbabilitiesFromUnigrams: frequency andBigrams: bigramFrequency).
 	actual := sorter sort: collection.
 	expected := #(strudel juice pie dream house).
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+BigramSorterTest >> testSortIfHistoryWordNotInTable [
+	"all probabilities are 0 because the history word does not exist"
+	| history collection actual expected |
+	history := 'possible'.
+	collection := { 'pie' . 'strudel' . 'house' . 'juice' . 'dream' }.
+	
+	sorter getHistory: history andCollection: collection.
+	sorter probabilities: (sorter getProbabilitiesFromUnigrams: frequency andBigrams: bigramFrequency).
+	actual := sorter sort: collection.
+	expected := #(dream juice house strudel pie).
 	self assert: actual equals: expected
 ]

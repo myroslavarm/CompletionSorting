@@ -27,7 +27,7 @@ BigramData >> bigrams [
 
 { #category : #'accessing - data' }
 BigramData >> frequencyFor: aPhrase [
-	^ (self bigrams at: aPhrase ifAbsent: 0.001) asNumber
+	^ (self bigrams at: aPhrase ifAbsent: 0) asNumber
 ]
 
 { #category : #'accessing - data' }
@@ -39,7 +39,7 @@ BigramData >> getFrequencyOf: aWord [
 
 { #category : #'accessing - data' }
 BigramData >> getFrequencyOf: aWord from: aTable [
-	^ (aTable at: aWord ifAbsent: 0.1)
+	^ (aTable at: aWord ifAbsent: 0)
 ]
 
 { #category : #'accessing - data' }

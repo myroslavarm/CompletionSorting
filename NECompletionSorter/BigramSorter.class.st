@@ -27,7 +27,11 @@ BigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramT
 	historyMapping := self mapHistoryfrom: aUnigramTable.
 	ngramMapping := self mapNgramPairsFrom: aBigramTable.
 	results := Dictionary new.
-	ngramMapping do: [ :each | (results add: (each first substrings) second -> (each second asNumber / historyMapping second asNumber) asFloat) ].
+	ngramMapping do: [ :each | 
+		((historyMapping second asNumber = 0)
+		ifTrue: [ results add: (each first substrings) second -> 0.0 ]
+		ifFalse: [ results add: (each first substrings) second -> 
+			(each second asNumber / historyMapping second asNumber) asFloat ]) ].
 	^ results
 ]
 
