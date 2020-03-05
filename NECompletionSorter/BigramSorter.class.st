@@ -19,7 +19,29 @@ BigramSorter >> getHistory: aPreviousWord andCollection: aCollection [
 	history := aPreviousWord.
 	collection := aCollection.
 	ngrams := collection collect: [ :each | (Character space join: {history . each}) ].
-	^ ngrams
+]
+
+{ #category : #utilities }
+BigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramTable [
+	| historyMapping ngramMapping results |
+	historyMapping := self mapHistoryfrom: aUnigramTable.
+	ngramMapping := self mapNgramPairsFrom: aBigramTable.
+	results := Dictionary new.
+	ngramMapping do: [ :each | (results add: (each first substrings) second -> (each second asNumber / historyMapping second asNumber) asFloat) ].
+	^ results
+]
+
+{ #category : #utilities }
+BigramSorter >> mapHistoryfrom: aTable [
+
+	^ {history . BigramData new getFrequencyOf: history from: aTable}
+]
+
+{ #category : #utilities }
+BigramSorter >> mapNgramPairsFrom: aTable [
+	
+	^ ngrams collect: [ :each |
+		{each . (BigramData new getFrequencyOf: each from: aTable )} ]
 ]
 
 { #category : #accessing }
