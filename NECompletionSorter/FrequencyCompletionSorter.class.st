@@ -19,7 +19,7 @@ FrequencyCompletionSorter class >> kind [
 { #category : #sorting }
 FrequencyCompletionSorter >> initialize [
 	sorter := FrequencySorter new.
-	sorter frequencies: FrequencyTable uniqueInstance frequencies
+	sorter frequencies: Unigram uniqueInstance frequencies
 ]
 
 { #category : #sorting }

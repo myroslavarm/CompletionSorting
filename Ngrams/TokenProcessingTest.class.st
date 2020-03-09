@@ -24,7 +24,7 @@ TokenProcessingTest >> setUp [
 		withColumns: { tokens . tokenTypes }
 		columnNames: #(tokens tokenTypes).
 		
-	preprocessor := TokenProcessing new.
+	preprocessor := TokenProcessing.
 ]
 
 { #category : #tests }

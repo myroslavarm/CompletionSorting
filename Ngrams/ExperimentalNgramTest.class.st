@@ -11,7 +11,7 @@ Class {
 { #category : #running }
 ExperimentalNgramTest >> setUp [
 	super setUp.
-	data := BigramData new bigrams.
+	data := BigramExperimental new bigrams.
 	ngrams := data associations collect: [ :each |
 		ExperimentalNgram words: each key substrings frequency: each value ]
 

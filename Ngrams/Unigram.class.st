@@ -2,7 +2,7 @@
 I'm a class for getting token frequencies from file
 "
 Class {
-	#name : #FrequencyTable,
+	#name : #Unigram,
 	#superclass : #Object,
 	#classVars : [
 		'UniqueInstance'
@@ -11,49 +11,38 @@ Class {
 }
 
 { #category : #'instance creation' }
-FrequencyTable class >> new [
+Unigram class >> new [
 	self error: 'FrequencyTable is a singleton -- send uniqueInstance instead'
 ]
 
 { #category : #'instance creation' }
-FrequencyTable class >> new: aClass [
+Unigram class >> new: aClass [
 	self error: 'FrequencyTable is a singleton -- send uniqueInstance instead'
 ]
 
 { #category : #'instance creation' }
-FrequencyTable class >> reset [ 
+Unigram class >> reset [ 
 	UniqueInstance := nil
 ]
 
 { #category : #'instance creation' }
-FrequencyTable class >> uniqueInstance [
+Unigram class >> uniqueInstance [
 
 	UniqueInstance ifNil: [ UniqueInstance := self basicNew ].
 	^ UniqueInstance
 ]
 
 { #category : #utilities }
-FrequencyTable >> frequencies [
+Unigram >> frequencies [
 	| frequencies |
 	frequencies := self readFile.
 	^ frequencies 
 ]
 
 { #category : #utilities }
-FrequencyTable >> frequenciesFile [
-
-	^ TokenProcessing dataFolder / 'frequencies.csv'
-]
-
-{ #category : #utilities }
-FrequencyTable >> frequencyFor: aWord [
-	^ (self frequencies at: aWord ifAbsent: 0.001) asNumber
-]
-
-{ #category : #utilities }
-FrequencyTable >> readFile [
+Unigram >> readFile [
 	| frequencies dict |
-	frequencies := self frequenciesFile readStreamDo: [ :readStream |
+	frequencies := TokenProcessing frequenciesFile readStreamDo: [ :readStream |
 		(NeoCSVReader on: readStream)
 			skipHeader;
 			addField;
@@ -62,14 +51,4 @@ FrequencyTable >> readFile [
 	dict := Dictionary new.
 	frequencies do: [ :each | dict at: each first put: each second ].
 	^ dict 
-]
-
-{ #category : #utilities }
-FrequencyTable >> sortResults [
-	"this is not used"
-	| data sorted |
-	data := self readFile.
-	sorted := (data associations asSortedCollection: [:x :y | x value > y value]) 
-            collect: [ :assoc | assoc key -> assoc value ].
-	^ sorted asOrderedDictionary
 ]

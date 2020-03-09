@@ -38,14 +38,14 @@ BigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramT
 { #category : #utilities }
 BigramSorter >> mapHistoryfrom: aTable [
 
-	^ {history . BigramData new getFrequencyOf: history from: aTable}
+	^ {history . Bigram new getFrequencyOf: history from: aTable}
 ]
 
 { #category : #utilities }
 BigramSorter >> mapNgramPairsFrom: aTable [
 	
 	^ ngrams collect: [ :each |
-		{each . (BigramData new getFrequencyOf: each from: aTable )} ]
+		{each . (Bigram new getFrequencyOf: each from: aTable )} ]
 ]
 
 { #category : #accessing }
