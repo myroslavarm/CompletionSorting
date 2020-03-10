@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'data',
-		'ngrams'
+		'ngrams',
+		'model'
 	],
 	#category : #'Ngrams-Tests'
 }
@@ -13,8 +14,18 @@ ExperimentalNgramTest >> setUp [
 	super setUp.
 	data := BigramExperimental new bigrams.
 	ngrams := data associations collect: [ :each |
-		ExperimentalNgram words: each key substrings frequency: each value ]
+		ExperimentalNgram words: each key substrings frequency: each value ].
+	model := Bigram new readFile
 
+]
+
+{ #category : #tests }
+ExperimentalNgramTest >> testNgramLibraryModel [
+	| expected actual word |
+	word := 'self'.
+	actual := model mostLikelyContinuations: word asNgram top: 10.
+	expected := #('assert:' 'assert:equals:' '.' 'new' 'class' 'deny:' 'subclassResponsibility' 'repository' 'model' 'error:').
+	self assert: actual equals: expected
 ]
 
 { #category : #tests }
