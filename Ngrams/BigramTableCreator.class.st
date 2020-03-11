@@ -13,7 +13,7 @@ BigramTableCreator >> model [
 	model := NgramModel order: 2.
 	tokens := self processedTokens.
 	model trainOn: tokens.
-	model removeNgramsWithCountsLessThan: 50.
+	model removeNgramsWithCountsLessThan: 30.
 	^ model
 ]
 
