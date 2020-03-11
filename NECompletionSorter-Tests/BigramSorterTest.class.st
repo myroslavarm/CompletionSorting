@@ -12,7 +12,7 @@ Class {
 { #category : #running }
 BigramSorterTest >> setUp [
 	super setUp.
-	sorter := BigramSorter new.
+	sorter := ExperimentalBigramSorter new.
 
 	frequency := { 'apple'->8 . 'hello'->10 . 'never'->5 } asDictionary.
 	bigramFrequency := { 'apple pie'->3 . 'apple strudel'->4 . 'apple juice'->3} asDictionary.
