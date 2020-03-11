@@ -11,20 +11,33 @@ Class {
 
 { #category : #running }
 ExperimentalNgramTest >> setUp [
+	| text text2 |
 	super setUp.
 	data := BigramExperimental new bigrams.
 	ngrams := data associations collect: [ :each |
 		ExperimentalNgram words: each key substrings frequency: each value ].
-	model := Bigram new readFile
+	model := NgramModel order: 2.
+	text := 'lorem ipsum lorem ipsum ipsum dolor lorem ipsum lorem lorem'.
+	model trainOnSentence: text.
+	text2 := 'lorem dolor ipsum lorem dolor'.
+	model trainOnSentence: text2
 
 ]
 
 { #category : #tests }
-ExperimentalNgramTest >> testNgramLibraryModel [
+ExperimentalNgramTest >> testMostLikelyContinuations [
 	| expected actual word |
-	word := 'self'.
-	actual := model mostLikelyContinuations: word asNgram top: 10.
-	expected := #('assert:' 'assert:equals:' '.' 'new' 'class' 'deny:' 'subclassResponsibility' 'repository' 'model' 'error:').
+	word := 'lorem'.
+	actual := model mostLikelyContinuations: word asNgram top: 3.
+	expected := #('ipsum' 'dolor' 'lorem').
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+ExperimentalNgramTest >> testProbabilityOfNgram [
+	| expected actual |
+	actual := model probabilityOfNgram: #(lorem ipsum) asNgram.
+	expected := 3/7 asFloat.
 	self assert: actual equals: expected
 ]
 
