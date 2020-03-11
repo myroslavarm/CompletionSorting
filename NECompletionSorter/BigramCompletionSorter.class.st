@@ -1,8 +1,8 @@
 "
-I sort completions based on frequencies
+I am class who sorts completion results based on a bigram model
 "
 Class {
-	#name : #FrequencyCompletionSorter,
+	#name : #BigramCompletionSorter,
 	#superclass : #CompletionSorter,
 	#instVars : [
 		'sorter'
@@ -10,20 +10,14 @@ Class {
 	#category : #NECompletionSorter
 }
 
-{ #category : #description }
-FrequencyCompletionSorter class >> kind [
-
-	^ 'experimental'
-]
-
 { #category : #sorting }
-FrequencyCompletionSorter >> initialize [
+BigramCompletionSorter >> initialize [
 	sorter := FrequencySorter new.
 	sorter frequencies: Unigram uniqueInstance frequencies
 ]
 
 { #category : #sorting }
-FrequencyCompletionSorter >> sortCompletionList: anOrderedCollection [
+BigramCompletionSorter >> sortCompletionList: anOrderedCollection [
 
 	^ sorter sort: anOrderedCollection
 ]

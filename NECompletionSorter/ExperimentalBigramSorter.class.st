@@ -10,7 +10,7 @@ Class {
 		'ngrams',
 		'probabilities'
 	],
-	#category : #'NECompletionSorter-Bigram'
+	#category : #NECompletionSorter
 }
 
 { #category : #utilities }
