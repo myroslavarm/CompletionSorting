@@ -2,7 +2,7 @@
 I sort elements of a collection based on bigrams
 "
 Class {
-	#name : #BigramSorter,
+	#name : #ExperimentalBigramSorter,
 	#superclass : #Object,
 	#instVars : [
 		'history',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #utilities }
-BigramSorter >> getHistory: aPreviousWord andCollection: aCollection [
+ExperimentalBigramSorter >> getHistory: aPreviousWord andCollection: aCollection [
 	
 	history := aPreviousWord.
 	collection := aCollection.
@@ -22,7 +22,7 @@ BigramSorter >> getHistory: aPreviousWord andCollection: aCollection [
 ]
 
 { #category : #utilities }
-BigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramTable [
+ExperimentalBigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramTable [
 	| historyMapping ngramMapping results |
 	historyMapping := self mapHistoryfrom: aUnigramTable.
 	ngramMapping := self mapNgramPairsFrom: aBigramTable.
@@ -36,30 +36,30 @@ BigramSorter >> getProbabilitiesFromUnigrams: aUnigramTable andBigrams: aBigramT
 ]
 
 { #category : #utilities }
-BigramSorter >> mapHistoryfrom: aTable [
+ExperimentalBigramSorter >> mapHistoryfrom: aTable [
 
 	^ {history . Bigram new getFrequencyOf: history from: aTable}
 ]
 
 { #category : #utilities }
-BigramSorter >> mapNgramPairsFrom: aTable [
+ExperimentalBigramSorter >> mapNgramPairsFrom: aTable [
 	
 	^ ngrams collect: [ :each |
 		{each . (Bigram new getFrequencyOf: each from: aTable )} ]
 ]
 
 { #category : #accessing }
-BigramSorter >> probabilities [
+ExperimentalBigramSorter >> probabilities [
 	^ probabilities
 ]
 
 { #category : #accessing }
-BigramSorter >> probabilities: anObject [
+ExperimentalBigramSorter >> probabilities: anObject [
 	probabilities := anObject
 ]
 
 { #category : #sorting }
-BigramSorter >> sort: anOrderedCollection [
+ExperimentalBigramSorter >> sort: anOrderedCollection [
 
 	^ anOrderedCollection sort: [ :a :b |
 		(probabilities at: a ifAbsent: 0) > (probabilities at: b ifAbsent: 0) ]
