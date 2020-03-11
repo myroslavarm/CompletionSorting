@@ -32,19 +32,6 @@ TokenProcessing class >> insertEmptyStringAndCommentPlaceholder: tokensDataFrame
 			with: (String tab, self emptyStringPlaceholder, String tab) ]
 ]
 
-{ #category : #processing }
-TokenProcessing class >> insertNumberPlaceholder: tokensDataFrame [
-	"clean token data by replacing each number with a <num> placeholder"
-	^ tokensDataFrame toColumn: 'tokens' applyElementwise: 
-		[ :each | each copyWithRegex: '(\+|-)?\d+(\.\d*)?((e|E)(\+|-)?\d+)?'
-			matchesReplacedWith: self numberPlaceholder]
-]
-
-{ #category : #utilities }
-TokenProcessing class >> numberPlaceholder [
-	^ '<num>'
-]
-
 { #category : #utilities }
 TokenProcessing class >> readFile [
 	^ DataFrame readFromCsv: self tokensFile
@@ -58,14 +45,39 @@ TokenProcessing class >> rejectInvalidTokens: tokensDataFrame [
 ]
 
 { #category : #processing }
+TokenProcessing class >> replaceWithPlaceholders [
+	"return a cleaned token dataset"
+	| data tokens tokenTypes arr |
+	data := self returnProcessedData.
+	tokens := (data column: 'tokens') asArray.
+	tokenTypes := (data column: 'tokenTypes') asArray.
+	arr := {'ARR'. 'STR'. 'SYM'. 'CHR'. 'NUM'.'COM'}.
+	1 to: tokenTypes size do: [ :i |
+		1 to: (tokenTypes at: i) size do: [ :j |
+			(arr includes: ((tokenTypes at: i) at: j)) ifTrue: [
+				(tokens at: i) at: j put:
+					(self selectPlaceholderFrom: ((tokenTypes at: i) at: j)) ] ] ].
+	^ tokens
+]
+
+{ #category : #processing }
 TokenProcessing class >> returnProcessedData [
 	"return a cleaned token dataset"
 	| tokensDataFrame |
 	tokensDataFrame := self readFile.
 	self insertEmptyStringAndCommentPlaceholder: tokensDataFrame.
-	tokensDataFrame := self insertNumberPlaceholder: tokensDataFrame.
 	self splitTokensAndTokenTypes: tokensDataFrame.
 	^ self rejectInvalidTokens: tokensDataFrame
+]
+
+{ #category : #processing }
+TokenProcessing class >> selectPlaceholderFrom: aTag [
+	aTag = 'ARR' ifTrue: [ ^ '<arr>' ].
+	aTag = 'STR' ifTrue: [ ^ '<str>' ].
+	aTag = 'SYM' ifTrue: [ ^ '<sym>' ].
+	aTag = 'CHR' ifTrue: [ ^ '<chr>' ].
+	aTag = 'NUM' ifTrue: [ ^ '<num>' ].
+	aTag = 'COM' ifTrue: [ ^ '<com>' ].
 ]
 
 { #category : #processing }

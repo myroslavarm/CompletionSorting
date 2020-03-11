@@ -16,7 +16,7 @@ BigramExperimental >> bigramFrequencies [
 	tokens do: [ :each | each overlappingPairsDo: [ :one :two | counts add: { one . two } ] ].
 	counts := counts collect: [ :each | each first, ' ', each second ].
 	counts := counts asBag valuesAndCounts.
-	^ counts reject: [ :each | each value < 50 ]
+	^ counts reject: [ :each | each value < 30 ]
 ]
 
 { #category : #utilities }

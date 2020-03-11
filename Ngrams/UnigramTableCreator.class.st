@@ -10,10 +10,9 @@ Class {
 { #category : #transforming }
 UnigramTableCreator >> frequencies [
 	"get single token frequencies"
-	| tokens cleanedTokens counts |
+	| tokens counts |
 	counts := OrderedCollection new.
-	cleanedTokens := TokenProcessing returnProcessedData.
-	tokens := (cleanedTokens column: 'tokens') asArray.
+	tokens := TokenProcessing replaceWithPlaceholders.
 	(tokens flatCollect: #yourself) asBag valuesAndCounts keysAndValuesDo: [ :key :value | counts add: { key . value }  ].
 	^ counts reject: [ :each | each second < 10 ]
 ]

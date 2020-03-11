@@ -58,5 +58,5 @@ ExperimentalNgramTest >> testSelectionByPrefixInSecondWord [
 	assoc := data associations collect: [ :each | each key substrings -> each value ].
 	selection := assoc select: [ :each | (each key first = 'super') and:
 		(each key second beginsWith: 'ini')].
-	self assert: selection size equals: 1
+	self assert: selection size equals: 2
 ]
