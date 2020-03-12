@@ -24,6 +24,5 @@ FrequencyCompletionSorter >> initialize [
 
 { #category : #sorting }
 FrequencyCompletionSorter >> sortCompletionList: anOrderedCollection [
-
 	^ sorter sort: anOrderedCollection
 ]
