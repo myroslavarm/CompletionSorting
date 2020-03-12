@@ -12,16 +12,15 @@ Metacello new
   load.
 ```
 
-## Unigram Sorting
+## Ngram-based Sorting
 ### Sorting Strategies Info
 - we already have a Frequency based sorter, which is now fast enough to use when using code completion
+- now the Bigram sorter is also available (there are some millisecond pauses but it's not critically slow)
 
 ### Testing for yourself
 - Settings -> Code Completion -> Sorter
-- choose `FrequencyCompletionSorter`
+- choose `FrequencyCompletionSorter` or `BigramCompltionSorter`
 
-## Bigram Sorting
-For now we have the 5k pairs of tokens and their frequencies loaded. 
-### TODO:
-- get probabilities based on history
+### Backlog
 - decide how to deal with first and second tokens separately
+- fix other items from Issues
