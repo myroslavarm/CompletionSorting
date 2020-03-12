@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'sorter',
 		'frequency',
-		'bigramFrequency'
+		'bigramFrequency',
+		'model'
 	],
 	#category : #'NECompletionSorter-Tests'
 }
@@ -12,36 +13,20 @@ Class {
 { #category : #running }
 BigramSorterTest >> setUp [
 	super setUp.
-	sorter := ExperimentalBigramSorter new.
-
-	frequency := { 'apple'->8 . 'hello'->10 . 'never'->5 } asDictionary.
-	bigramFrequency := { 'apple pie'->3 . 'apple strudel'->4 . 'apple juice'->3} asDictionary.
+	sorter := BigramSorter new.
+	model := Bigram new readFile.
 	
 ]
 
 { #category : #tests }
 BigramSorterTest >> testSort [
-	| history collection actual expected |
-	history := 'apple'.
-	collection := { 'pie' . 'strudel' . 'house' . 'juice' . 'dream' }.
-	
-	sorter getHistory: history andCollection: collection.
-	sorter probabilities: (sorter getProbabilitiesFromUnigrams: frequency andBigrams: bigramFrequency).
+	| history collection actual expected ngrams probabilities |
+	history := 'OrderedCollection'.
+	collection := { 'new' . 'hello' . 'new:' . 'newFrom:' . 'needsSlotClassDefinition'}.
+	ngrams := sorter getHistory: history andCollection: collection.
+	probabilities := sorter probabilitiesFromModel: model withNgrams: ngrams.
+	sorter probabilities: probabilities.
 	actual := sorter sort: collection.
-	expected := #(strudel juice pie dream house).
-	self assert: actual equals: expected
-]
-
-{ #category : #tests }
-BigramSorterTest >> testSortIfHistoryWordNotInTable [
-	"all probabilities are 0 because the history word does not exist"
-	| history collection actual expected |
-	history := 'possible'.
-	collection := { 'pie' . 'strudel' . 'house' . 'juice' . 'dream' }.
-	
-	sorter getHistory: history andCollection: collection.
-	sorter probabilities: (sorter getProbabilitiesFromUnigrams: frequency andBigrams: bigramFrequency).
-	actual := sorter sort: collection.
-	expected := #(dream juice house strudel pie).
+	expected := #(new new: needsSlotClassDefinition newFrom: hello).
 	self assert: actual equals: expected
 ]
