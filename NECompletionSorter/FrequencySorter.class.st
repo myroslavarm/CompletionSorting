@@ -24,5 +24,5 @@ FrequencySorter >> frequencies: anObject [
 FrequencySorter >> sort: anOrderedCollection [
 
 	^ anOrderedCollection sort: [ :a :b |
-		(frequencies at: a ifAbsent: 0) > (frequencies at: b ifAbsent: 0) ]
+		(frequencies at: a contents ifAbsent: 0) > (frequencies at: b contents ifAbsent: 0) ]
 ]

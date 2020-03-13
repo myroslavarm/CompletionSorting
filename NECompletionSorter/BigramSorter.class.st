@@ -40,5 +40,5 @@ BigramSorter >> probabilitiesFromModel: aModel withNgrams: anArray [
 BigramSorter >> sort: anOrderedCollection [
 
 	^ anOrderedCollection sort: [ :a :b |
-		(probabilities at: a ifAbsent: 0) > (probabilities at: b ifAbsent: 0) ]
+		(probabilities at: a contents ifAbsent: 0) > (probabilities at: b contents ifAbsent: 0) ]
 ]
