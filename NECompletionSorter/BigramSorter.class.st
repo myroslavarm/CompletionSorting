@@ -10,29 +10,23 @@ Class {
 	#category : #NECompletionSorter
 }
 
-{ #category : #utilities }
-BigramSorter >> getHistory: aPreviousWord andCollection: aCollection [
-	| collection |
-	collection := aCollection.
-	aPreviousWord = '' ifTrue: [ 
-		^ collection collect: [ :each | (Character space join: { '<s>' . each }) ] ].
-	^ collection collect: [ :each | (Character space join: { aPreviousWord . each }) ]
-]
-
-{ #category : #accessing }
-BigramSorter >> probabilities [
-	^ probabilities
-]
-
 { #category : #accessing }
 BigramSorter >> probabilities: anObject [
 	probabilities := anObject
 ]
 
 { #category : #accessing }
-BigramSorter >> probabilitiesFromModel: aModel withNgrams: anArray [
-	probabilities := anArray collect: [ :each | 
-			(each substrings second) -> (aModel probabilityOfNgram: (each substrings asArray asNgram)) ].
+BigramSorter >> probabilitiesFromModel: aModel history: aHistory andCollection: aCollection [
+	| collection ngrams |
+	collection := aCollection.
+	ngrams := Array new.
+	aHistory = ''
+		ifTrue: [ ngrams := collection collect: [ :each |
+				(Character space join: { '<s>' . each }) ] ]; 
+		ifFalse: [ ngrams := collection collect: [ :each |
+				(Character space join: { aHistory . each }) ] ].
+	probabilities := ngrams collect: [ :each | (each substrings second) ->
+		(aModel probabilityOfNgram: (each substrings asArray asNgram)) ].
 	^ probabilities asDictionary
 ]
 

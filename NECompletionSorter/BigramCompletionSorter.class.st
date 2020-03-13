@@ -6,11 +6,7 @@ Class {
 	#superclass : #CompletionSorter,
 	#instVars : [
 		'sorter',
-		'history',
-		'model',
-		'probabilities',
-		'ngrams',
-		'collection'
+		'model'
 	],
 	#category : #NECompletionSorter
 }
@@ -23,10 +19,11 @@ BigramCompletionSorter >> initialize [
 
 { #category : #sorting }
 BigramCompletionSorter >> sortCompletionList: anOrderedCollection [
+	| history collection probabilities |
 	history := context source wordBefore: context position  - context completionToken size - 1.
 	collection := anOrderedCollection collect: [ :each | each contents asString ].
-	ngrams := sorter getHistory: history andCollection: collection.
-	probabilities := sorter probabilitiesFromModel: model withNgrams: ngrams.
+	probabilities := sorter probabilitiesFromModel: model 
+		history: history andCollection: collection. 
 	sorter probabilities: probabilities.
 	^ sorter sort: anOrderedCollection
 ]
