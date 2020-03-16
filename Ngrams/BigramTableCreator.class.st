@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #transforming }
+BigramTableCreator >> bigramFile [
+
+	^ 'ngram_model.json'
+]
+
+{ #category : #transforming }
 BigramTableCreator >> model [
 	| model tokens |
 	model := NgramModel order: 2.
@@ -28,5 +34,5 @@ BigramTableCreator >> processedTokens [
 BigramTableCreator >> writeToFile [
 	| model |
 	model := self model.
-	model saveToDirectory: TokenProcessing dataFolder
+	model saveToFile: TokenProcessing dataFolder / self bigramFile
 ]

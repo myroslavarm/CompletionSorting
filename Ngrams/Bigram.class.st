@@ -23,6 +23,8 @@ Bigram >> getFrequencyOf: aWord from: aModel [
 
 { #category : #utilities }
 Bigram >> readFile [
-	model := NgramModel readFromDirectory: TokenProcessing dataFolder.
+	| file |
+	file := TokenProcessing dataFolder / BigramTableCreator new bigramFile.
+	model := NgramModel readFromFile: file.
 	^ model
 ]
