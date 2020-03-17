@@ -5,8 +5,7 @@ Class {
 	#name : #Bigram,
 	#superclass : #Object,
 	#instVars : [
-		'model',
-		'probabilities'
+		'model'
 	],
 	#category : #'Ngrams-DataExtraction'
 }
@@ -24,9 +23,8 @@ Bigram >> getFrequencyOf: aWord from: aModel [
 
 { #category : #accessing }
 Bigram >> probabilitiesFromModel: aModel history: aHistory andCollection: anOrderedCollection [
-	| collection ngrams |
+	| collection ngrams probabilities |
 	collection := anOrderedCollection collect: [ :each | each contents asString ].
-	ngrams := Array new.
 	aHistory = ''
 		ifTrue: [ ngrams := collection collect: [ :each |
 				(Character space join: { '<s>' . each }) ] ]; 
