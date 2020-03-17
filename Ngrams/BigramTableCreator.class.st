@@ -15,24 +15,19 @@ BigramTableCreator >> bigramFile [
 
 { #category : #transforming }
 BigramTableCreator >> model [
-	| model tokens |
+	| model |
 	model := NgramModel order: 2.
-	tokens := self processedTokens.
-	model trainOn: tokens.
+	model trainOn: self processedTokens.
 	model removeNgramsWithCountsLessThan: 50.
 	^ model
 ]
 
 { #category : #transforming }
 BigramTableCreator >> processedTokens [
-	| tokens |
-	tokens := TokenProcessing replaceWithPlaceholders.
-	^ tokens
+	^ TokenProcessing replaceWithPlaceholders
 ]
 
 { #category : #transforming }
 BigramTableCreator >> writeToFile [
-	| model |
-	model := self model.
-	model saveToFile: TokenProcessing dataFolder / self bigramFile
+	self model saveToFile: TokenProcessing dataFolder / self bigramFile
 ]

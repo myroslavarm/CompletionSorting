@@ -6,24 +6,31 @@ Class {
 	#superclass : #CompletionSorter,
 	#instVars : [
 		'sorter',
-		'model'
+		'model',
+		'probabilities',
+		'bigram'
 	],
 	#category : #NECompletionSorter
 }
 
+{ #category : #accessing }
+BigramCompletionSorter >> getWordBefore [
+	^ context source wordBefore: context position  - context completionToken size - 1
+]
+
 { #category : #sorting }
 BigramCompletionSorter >> initialize [
+
+	bigram := Bigram new.
 	sorter := BigramSorter new.
 	model := Bigram new readFile
 ]
 
 { #category : #sorting }
 BigramCompletionSorter >> sortCompletionList: anOrderedCollection [
-	| history collection probabilities |
-	history := context source wordBefore: context position  - context completionToken size - 1.
-	collection := anOrderedCollection collect: [ :each | each contents asString ].
-	probabilities := sorter probabilitiesFromModel: model 
-		history: history andCollection: collection. 
+
+	probabilities := bigram probabilitiesFromModel: model 
+		history: self getWordBefore andCollection: anOrderedCollection. 
 	sorter probabilities: probabilities.
 	^ sorter sort: anOrderedCollection
 ]

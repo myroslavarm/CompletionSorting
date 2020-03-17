@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'sorter',
-		'model'
+		'model',
+		'bigram'
 	],
 	#category : #'NECompletionSorter-Tests'
 }
@@ -12,6 +13,7 @@ Class {
 BigramSorterTest >> setUp [
 	super setUp.
 	sorter := BigramSorter new.
+	bigram := Bigram new.
 	model := Bigram new readFile.
 	
 ]
@@ -30,7 +32,7 @@ BigramSorterTest >> testSortOfAST [
 	completionToken := node completionToken: position.
 	history := source wordBefore: position  - completionToken size - 1.
 	collection := { 'new' . 'Object' . '<num>' . 'self' . '<str>' }.
-	probabilities := sorter probabilitiesFromModel: model history: history andCollection: collection.
+	probabilities := bigram probabilitiesFromModel: model history: history andCollection: collection.
 	sorter probabilities: probabilities.
 	actual := sorter sort: collection.
 	"so due to the way we get the history word, punctuation is not counted but it seems
@@ -44,7 +46,7 @@ BigramSorterTest >> testSortOfPunctuationAsHistory [
 	| history collection probabilities actual expected |
 	history := '.'.
 	collection := { 'new' . 'Object' . '<num>' . 'self' . '<str>' }.
-	probabilities := sorter probabilitiesFromModel: model history: history andCollection: collection.
+	probabilities := bigram probabilitiesFromModel: model history: history andCollection: collection.
 	sorter probabilities: probabilities.
 	actual := sorter sort: collection.
 	"i think it makes sense that at the start of a new statement something like self
@@ -58,7 +60,7 @@ BigramSorterTest >> testSortWithRegularData [
 	| history collection probabilities actual expected |
 	history := 'OrderedCollection'.
 	collection := { 'new' . 'hello' . 'new:' . 'newFrom:' . 'needsSlotClassDefinition'}.
-	probabilities := sorter probabilitiesFromModel: model history: history andCollection: collection.
+	probabilities := bigram probabilitiesFromModel: model history: history andCollection: collection.
 	sorter probabilities: probabilities.
 	actual := sorter sort: collection.
 	expected := #(new new: needsSlotClassDefinition newFrom: hello).

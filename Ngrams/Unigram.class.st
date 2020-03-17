@@ -34,9 +34,7 @@ Unigram class >> uniqueInstance [
 
 { #category : #utilities }
 Unigram >> frequencies [
-	| frequencies |
-	frequencies := self readFile.
-	^ frequencies 
+	^ self readFile
 ]
 
 { #category : #utilities }
