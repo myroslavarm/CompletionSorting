@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'sorter',
 		'model',
-		'probabilities',
 		'bigram'
 	],
 	#category : #NECompletionSorter
@@ -21,16 +20,17 @@ BigramCompletionSorter >> getWordBefore [
 { #category : #sorting }
 BigramCompletionSorter >> initialize [
 
-	bigram := Bigram new.
 	sorter := BigramSorter new.
-	model := Bigram new readFile
+	bigram := Bigram new.
+	model := bigram readFile
 ]
 
 { #category : #sorting }
 BigramCompletionSorter >> sortCompletionList: anOrderedCollection [
-
-	probabilities := bigram probabilitiesFromModel: model 
-		history: self getWordBefore andCollection: anOrderedCollection. 
+	| probabilities |
+	probabilities := bigram probabilitiesFromModel: model
+					history: self getWordBefore
+					andCollection: anOrderedCollection. 
 	sorter probabilities: probabilities.
 	^ sorter sort: anOrderedCollection
 ]
