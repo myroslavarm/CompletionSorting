@@ -51,12 +51,11 @@ TokenProcessing class >> replaceWithPlaceholders [
 	data := self returnProcessedData.
 	tokens := (data column: 'tokens') asArray.
 	tokenTypes := (data column: 'tokenTypes') asArray.
-	arr := {'ARR'. 'STR'. 'SYM'. 'CHR'. 'NUM'.'COM'}.
-	1 to: tokenTypes size do: [ :i |
-		1 to: (tokenTypes at: i) size do: [ :j |
-			(arr includes: ((tokenTypes at: i) at: j)) ifTrue: [
-				(tokens at: i) at: j put:
-					(self selectPlaceholderFrom: ((tokenTypes at: i) at: j)) ] ] ].
+	arr := {'ARR'. 'STR'. 'SYM'. 'CHR'. 'NUM'. 'COM'}.
+	tokenTypes withIndexDo: [ :typeSequence :i |
+		typeSequence withIndexDo: [ :type :j |
+			(arr includes: type) ifTrue: [ (tokens at: i) at: j
+				put: (self selectPlaceholderFrom: type) ] ] ].
 	^ tokens
 ]
 
