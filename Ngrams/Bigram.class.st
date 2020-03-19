@@ -10,17 +10,6 @@ Class {
 	#category : #'Ngrams-DataExtraction'
 }
 
-{ #category : #utilities }
-Bigram >> getFrequencyOf: aWord [
-	^ self getFrequencyOf: aWord from: model
-]
-
-{ #category : #utilities }
-Bigram >> getFrequencyOf: aWord from: aModel [
-	
-	^ aModel at: aWord ifAbsent: 0
-]
-
 { #category : #accessing }
 Bigram >> probabilitiesFromModel: aModel history: aHistory andCollection: anOrderedCollection [
 	| collection ngrams probabilities |
