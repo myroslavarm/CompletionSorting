@@ -15,6 +15,20 @@ BigramSortingContextTest >> createContextFor: aString at: anInteger [
 ]
 
 { #category : #tests }
+BigramSortingContextTest >> testExpressionInIncompleteParanthesis [
+	| text context props |
+	text := 'testIt
+	1 + (1 si'.
+	context := self 
+		createContextFor: text
+		at: text size.
+
+	props := context entries collect: #contents.	
+		
+	self assert: props isNotEmpty equals: true
+]
+
+{ #category : #tests }
 BigramSortingContextTest >> testOrderOfMessageSend [
 	| text context completions |
 	text := 'testIt
