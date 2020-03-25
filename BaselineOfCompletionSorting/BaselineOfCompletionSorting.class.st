@@ -21,5 +21,7 @@ BaselineOfCompletionSorting >> baselineOf: spec [
 		spec
 			package: 'Ngrams' with: [ spec requires: #(GitBridge) ];
 			package: 'NECompletionSorter' with: [ spec requires: #(Ngrams) ];
-			package: 'NECompletionSorter-Tests' with: [ spec requires: #(NECompletionSorter) ] ]
+			package: 'NECompletionSorter-Tests' with: [ spec requires: #(NECompletionSorter) ];
+			package: 'NgramsEvaluation';
+			package: 'NgramsEvaluation-Tests' with: [ spec requires: #(NgramsEvaluation) ] ]
 ]
