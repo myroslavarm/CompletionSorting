@@ -56,7 +56,8 @@ CompletionEvaluation >> recordResults [
 	results := OrderedCollection new.
 	sentences withIndexDo: [ :text :i |
 		props := self createCompletionsGiven: text.
-		(props includes: (completions at: i)) ifTrue: [
-			results add: true ] ifFalse: [ results add: false ] ].
+		(props includes: (completions at: i)) 
+			ifTrue: [ results add: { true . props indexOf: (completions at: i) } ]
+			ifFalse: [ results add: { false . false } ] ].
 	^ results
 ]
