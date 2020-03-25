@@ -15,10 +15,16 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 ]
 
 { #category : #utilities }
+CompletionEvaluation >> getCorrectCompletions [
+	| tokens |
+	tokens := self methodTokens.
+	^ tokens reject: [ :each | each asString matchesRegex: '\W' ]
+]
+
+{ #category : #utilities }
 CompletionEvaluation >> getPartsOfMethods [
-	| history method tokens sentences sequences |
-	method := (Collection methods collect: [ :each | each ast ]) second.
-	tokens := RBScanner scanTokens: method sourceCode.
+	| history tokens sentences sequences |
+	tokens := self methodTokens.
 	history := ''.
 	sequences := ''.
 	sentences := tokens collect: [ :each | 
@@ -26,6 +32,13 @@ CompletionEvaluation >> getPartsOfMethods [
 		history := history asString, ' ', each asString.
 		sequences allButFirst ].
 	^ sentences select: [ :each | each last isLetter ]
+]
+
+{ #category : #utilities }
+CompletionEvaluation >> methodTokens [
+	| method |
+	method := (Collection methods collect: [ :each | each ast ]) second.
+	^ RBScanner scanTokens: method sourceCode
 ]
 
 { #category : #utilities }
