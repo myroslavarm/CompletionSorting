@@ -4,6 +4,13 @@ Class {
 	#category : #NgramsEvaluation
 }
 
+{ #category : #utilities }
+CompletionEvaluation >> createCompletionsGiven: aText [
+	| context |
+	context := self createContextFor: aText at: aText size.
+	^ context entries collect: #contents
+]
+
 { #category : #private }
 CompletionEvaluation >> createContextFor: aString at: anInteger [ 
 	^ CompletionContext
@@ -43,11 +50,13 @@ CompletionEvaluation >> methodTokens [
 
 { #category : #utilities }
 CompletionEvaluation >> recordResults [
-	| sentences context props results |
+	| sentences props results completions |
 	sentences := self getPartsOfMethods.
+	completions := self getCorrectCompletions.
 	results := OrderedCollection new.
-	results := sentences collect: [ :text |
-		context := self createContextFor: text at: text size.
-		props := context entries collect: #contents. props ].
+	sentences withIndexDo: [ :text :i |
+		props := self createCompletionsGiven: text.
+		(props includes: (completions at: i)) ifTrue: [
+			results add: true ] ifFalse: [ results add: false ] ].
 	^ results
 ]
