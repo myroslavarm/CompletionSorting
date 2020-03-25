@@ -22,19 +22,16 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 ]
 
 { #category : #utilities }
-CompletionEvaluation >> getCorrectCompletions [
-	| tokens |
-	tokens := self methodTokens.
-	^ tokens reject: [ :each | each asString matchesRegex: '\W' ]
+CompletionEvaluation >> getCorrectCompletionsFrom: aList [
+	^ aList reject: [ :each | each asString matchesRegex: '\W' ]
 ]
 
 { #category : #utilities }
-CompletionEvaluation >> getPartsOfMethods [
-	| history tokens sentences sequences |
-	tokens := self methodTokens.
+CompletionEvaluation >> getPartsOfMethodsFrom: aList [
+	| history sentences sequences |
 	history := ''.
 	sequences := ''.
-	sentences := tokens collect: [ :each | 
+	sentences := aList collect: [ :each | 
 		sequences := history asString, ' ', (each asString truncateTo: 3). 
 		history := history asString, ' ', each asString.
 		sequences allButFirst ].
@@ -42,22 +39,28 @@ CompletionEvaluation >> getPartsOfMethods [
 ]
 
 { #category : #utilities }
-CompletionEvaluation >> methodTokens [
-	| method |
-	method := (Collection methods collect: [ :each | each ast ]) second.
-	^ RBScanner scanTokens: method sourceCode
+CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentenceList [
+	| results props |
+	results := aSentenceList withIndexCollect: [ :text :i |
+		props := self createCompletionsGiven: text.
+		(props includes: (aCompletionList at: i)) 
+			ifTrue: [ { true . props indexOf: (aCompletionList at: i) } ]
+			ifFalse: [ { false . false } ] ].
+	^ results
 ]
 
 { #category : #utilities }
 CompletionEvaluation >> recordResults [
-	| sentences props results completions |
-	sentences := self getPartsOfMethods.
-	completions := self getCorrectCompletions.
-	results := OrderedCollection new.
-	sentences withIndexDo: [ :text :i |
-		props := self createCompletionsGiven: text.
-		(props includes: (completions at: i)) 
-			ifTrue: [ results add: { true . props indexOf: (completions at: i) } ]
-			ifFalse: [ results add: { false . false } ] ].
-	^ results
+	| sentences completions tokens |
+	tokens := self tokensFromClass: Collection.
+	sentences := self getPartsOfMethodsFrom: tokens.
+	completions := self getCorrectCompletionsFrom: tokens.
+	^ self matchCorrectCompletions: completions from: sentences 
+]
+
+{ #category : #utilities }
+CompletionEvaluation >> tokensFromClass: aClass [
+	| method |
+	method := (aClass methods collect: [ :each | each ast ]) second.
+	^ RBScanner scanTokens: method sourceCode
 ]
