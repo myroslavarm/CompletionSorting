@@ -1,3 +1,6 @@
+"
+I am an evaluator for code completion strategies
+"
 Class {
 	#name : #CompletionEvaluation,
 	#superclass : #Object,
@@ -6,6 +9,7 @@ Class {
 
 { #category : #utilities }
 CompletionEvaluation >> createCompletionsGiven: aText [
+	"get completion candidates based on text"
 	| context |
 	context := self createContextFor: aText at: aText size.
 	^ context entries collect: #contents
@@ -28,6 +32,8 @@ CompletionEvaluation >> getCorrectCompletionsFrom: aList [
 
 { #category : #utilities }
 CompletionEvaluation >> getPartsOfMethodsFrom: aList [
+	"generate parts of each method to simulate how the method was developed.
+	return only the ones ending with alphabetic tokens, instead of delimiters"
 	| history sentences sequences |
 	history := ''.
 	sequences := ''.
@@ -40,6 +46,8 @@ CompletionEvaluation >> getPartsOfMethodsFrom: aList [
 
 { #category : #utilities }
 CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentenceList [
+	"for each valid part of the method record whether the correct completion was found.
+	and if so, additionally record its position"
 	| results props |
 	results := aSentenceList withIndexCollect: [ :text :i |
 		props := self createCompletionsGiven: text.
