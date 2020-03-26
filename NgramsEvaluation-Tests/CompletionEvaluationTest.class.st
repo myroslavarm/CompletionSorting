@@ -15,7 +15,11 @@ CompletionEvaluationTest >> setUp [
 
 { #category : #tests }
 CompletionEvaluationTest >> testMatchingCorrectCompletions [
-	| results |
-	results := evaluator recordResults.
+	| results tokens sentences methods completions |
+	tokens := evaluator tokensFromClass: Collection.
+	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
+	sentences := methods collect: [ :each | each first ].
+	completions := methods collect: [ :each | each second ].
+	results := evaluator matchCorrectCompletions: completions from: sentences.
 	self assert: results second first equals: true
 ]
