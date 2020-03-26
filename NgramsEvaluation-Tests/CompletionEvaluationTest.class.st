@@ -19,7 +19,7 @@ CompletionEvaluationTest >> testGetCompletionSequences [
 	tokens := evaluator tokensFromClass: Collection.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	sentences := methods collect: [ :each | each first ].
-	self assert: sentences third equals: 'includes: anObject ^ sel'
+	self assert: sentences third asString equals: 'includes: anObject ^ sel'
 ]
 
 { #category : #tests }
@@ -28,7 +28,7 @@ CompletionEvaluationTest >> testGetCorrectCompletions [
 	tokens := evaluator tokensFromClass: Collection.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	completions := methods collect: [ :each | each second ].
-	self assert: completions second equals: 'anObject'
+	self assert: completions second asString equals: 'anObject'
 ]
 
 { #category : #tests }
