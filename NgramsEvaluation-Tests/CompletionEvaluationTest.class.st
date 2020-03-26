@@ -16,6 +16,7 @@ CompletionEvaluationTest >> setUp [
 { #category : #tests }
 CompletionEvaluationTest >> testGetCompletionSequences [
 	| tokens sentences methods |
+	self skip.
 	tokens := evaluator tokensFromClass: Collection.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	sentences := methods collect: [ :each | each first ].
@@ -25,6 +26,7 @@ CompletionEvaluationTest >> testGetCompletionSequences [
 { #category : #tests }
 CompletionEvaluationTest >> testGetCorrectCompletions [
 	| tokens methods completions |
+	self skip.
 	tokens := evaluator tokensFromClass: Collection.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	completions := methods collect: [ :each | each second ].
