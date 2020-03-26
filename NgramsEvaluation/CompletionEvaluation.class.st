@@ -26,22 +26,21 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 ]
 
 { #category : #utilities }
-CompletionEvaluation >> getCorrectCompletionsFrom: aList [
-	^ aList reject: [ :each | each asString matchesRegex: '\W' ]
-]
-
-{ #category : #utilities }
-CompletionEvaluation >> getPartsOfMethodsFrom: aList [
+CompletionEvaluation >> getCompletionSequences: aList from: aStart to: anEnd [
 	"generate parts of each method to simulate how the method was developed.
 	return only the ones ending with alphabetic tokens, instead of delimiters"
-	| history sentences sequences |
+	| history sentences sequences interval |
 	history := ''.
 	sequences := ''.
-	sentences := aList collect: [ :each | 
-		sequences := history asString, ' ', (each asString truncateTo: 3). 
-		history := history asString, ' ', each asString.
-		sequences allButFirst ].
-	^ sentences select: [ :each | each last isLetter ]
+	interval :=  Interval from: aStart to: anEnd.
+	sentences := OrderedCollection new.
+	aList do: [ :each |  
+		interval do: [ :number |
+			each asString size >= number asNumber ifTrue: [
+				sequences := each asString truncateTo: number asNumber. 
+				sentences add: { (history, ' ', sequences) allButFirst . each asString } ] ]. 
+		history := history asString, ' ', each asString ].
+	^ sentences select: [ :each | (each first) last isLetter ]
 ]
 
 { #category : #utilities }
@@ -59,10 +58,11 @@ CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentence
 
 { #category : #utilities }
 CompletionEvaluation >> recordResults [
-	| sentences completions tokens |
+	| sentences completions tokens methods |
 	tokens := self tokensFromClass: Collection.
-	sentences := self getPartsOfMethodsFrom: tokens.
-	completions := self getCorrectCompletionsFrom: tokens.
+	methods := self getCompletionSequences: tokens from: 2 to: 8.
+	sentences := methods collect: [ :each | each first ].
+	completions := methods collect: [ :each | each second ].
 	^ self matchCorrectCompletions: completions from: sentences 
 ]
 
