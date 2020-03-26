@@ -11,6 +11,6 @@ SmalltalkCISpec {
     #path : 'addRepoToIceberg.st'
   },
   #testing : {
-    #categories : [ 'NECompletionSorter*', 'Ngrams*' ]
+    #categories : [ 'NECompletionSorter*', 'Ngrams*', 'NgramsEvaluation*' ]
     }  
 }
