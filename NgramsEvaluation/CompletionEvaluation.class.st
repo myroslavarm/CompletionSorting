@@ -29,18 +29,20 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 CompletionEvaluation >> getCompletionSequences: aList from: aStart to: anEnd [
 	"generate parts of each method to simulate how the method was developed.
 	return only the ones ending with alphabetic tokens, instead of delimiters"
-	| history sentences sequences interval |
-	history := ''.
-	sequences := ''.
+	| history sentences sequences interval result |
 	interval :=  Interval from: aStart to: anEnd.
-	sentences := OrderedCollection new.
-	aList do: [ :each |  
+	result := aList collect: [ :method | 
+		sentences := OrderedCollection new.
+		history := ''.
+		sequences := ''.
+		method do: [ :token |
 		interval do: [ :number |
-			each asString size >= number asNumber ifTrue: [
-				sequences := each asString truncateTo: number asNumber. 
-				sentences add: { (history, ' ', sequences) allButFirst . each asString } ] ]. 
-		history := history asString, ' ', each asString ].
-	^ sentences select: [ :each | (each first) last isLetter ]
+			token asString size >= number asNumber ifTrue: [
+				sequences := token asString truncateTo: number asNumber. 
+				sentences add: { (history, ' ', sequences) allButFirst . token asString } ] ]. 
+		history := history asString, ' ', token asString ].
+		sentences select: [ :each | (each first) last isLetter ] ].
+	^ result
 ]
 
 { #category : #utilities }
@@ -51,16 +53,17 @@ CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentence
 	results := aSentenceList withIndexCollect: [ :text :i |
 		props := self createCompletionsGiven: text.
 		(props includes: (aCompletionList at: i)) 
-			ifTrue: [ { true . props indexOf: (aCompletionList at: i) } ]
-			ifFalse: [ { false . false } ] ].
+			ifTrue: [ { (aCompletionList at: i). true . props indexOf: (aCompletionList at: i) } ]
+			ifFalse: [ { (aCompletionList at: i). false . false } ] ].
 	^ results
 ]
 
 { #category : #utilities }
 CompletionEvaluation >> recordResults [
 	| sentences completions tokens methods |
-	tokens := self tokensFromClass: Collection.
-	methods := self getCompletionSequences: tokens from: 2 to: 8.
+	tokens := self tokensFromClass: FrequencyCompletionSorter.
+	methods := self getCompletionSequences: tokens from: 3 to: 3.
+	self halt.
 	sentences := methods collect: [ :each | each first ].
 	completions := methods collect: [ :each | each second ].
 	^ self matchCorrectCompletions: completions from: sentences 
@@ -68,7 +71,8 @@ CompletionEvaluation >> recordResults [
 
 { #category : #utilities }
 CompletionEvaluation >> tokensFromClass: aClass [
-	| method |
-	method := (aClass methods collect: [ :each | each ast ]) second.
-	^ RBScanner scanTokens: method sourceCode
+	| allMethods tokens |
+	allMethods := aClass methods collect: [ :each | each ast ].
+	tokens := allMethods collect: [ :each | RBScanner scanTokens: each sourceCode ].
+	^ tokens
 ]
