@@ -51,24 +51,27 @@ CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentence
 	results := aSentenceList withIndexCollect: [ :text :i |
 		props := self createCompletionsGiven: text.
 		(props includes: (aCompletionList at: i)) 
-			ifTrue: [ { true . props indexOf: (aCompletionList at: i) } ]
-			ifFalse: [ { false . false } ] ].
+			ifTrue: [ { aCompletionList at: i. true . props indexOf: (aCompletionList at: i) } ]
+			ifFalse: [ { aCompletionList at: i. false . false } ] ].
 	^ results
 ]
 
 { #category : #utilities }
 CompletionEvaluation >> recordResults [
-	| sentences completions tokens methods |
-	tokens := self tokensFromClass: Collection.
-	methods := self getCompletionSequences: tokens from: 2 to: 8.
-	sentences := methods collect: [ :each | each first ].
-	completions := methods collect: [ :each | each second ].
-	^ self matchCorrectCompletions: completions from: sentences 
+	| sentences completions tokens methods matches |
+	tokens := self tokensFromClass: FrequencyCompletionSorter.
+	matches := tokens collect: [ :method |
+		methods := self getCompletionSequences: method from: 2 to: 8.
+		sentences := methods collect: [ :each | each first ].
+		completions := methods collect: [ :each | each second ].
+		self matchCorrectCompletions: completions from: sentences ].
+	^ matches
 ]
 
 { #category : #utilities }
 CompletionEvaluation >> tokensFromClass: aClass [
-	| method |
-	method := (aClass methods collect: [ :each | each ast ]) second.
-	^ RBScanner scanTokens: method sourceCode
+	| allMethods tokens |
+	allMethods := aClass methods collect: [ :each | each ast ].
+	tokens := allMethods collect: [ :each | RBScanner scanTokens: each sourceCode ].
+	^ tokens
 ]

@@ -36,10 +36,10 @@ CompletionEvaluationTest >> testGetCorrectCompletions [
 { #category : #tests }
 CompletionEvaluationTest >> testMatchingCorrectCompletions [
 	| results tokens sentences methods completions |
-	tokens := evaluator tokensFromClass: Collection.
+	tokens := (evaluator tokensFromClass: FrequencyCompletionSorter) second.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	sentences := methods collect: [ :each | each first ].
 	completions := methods collect: [ :each | each second ].
 	results := evaluator matchCorrectCompletions: completions from: sentences.
-	self assert: results second first equals: true
+	self assert: results first second equals: true
 ]
