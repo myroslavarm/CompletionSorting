@@ -4,8 +4,23 @@ I am an evaluator for code completion strategies
 Class {
 	#name : #CompletionEvaluation,
 	#superclass : #Object,
+	#instVars : [
+		'countSuccess',
+		'countAll'
+	],
 	#category : #NgramsEvaluation
 }
+
+{ #category : #utilities }
+CompletionEvaluation >> calculateCompletionEvaluation [
+	| sentences completions tokens methods |
+	tokens := self tokensFromClass: FrequencyCompletionSorter.
+	^ tokens collect: [ :method |
+		methods := self getCompletionSequences: method from: 2 to: 8.
+		sentences := methods collect: [ :each | each first ].
+		completions := methods collect: [ :each | each second ].
+		self matchCorrectCompletions: completions from: sentences ]
+]
 
 { #category : #utilities }
 CompletionEvaluation >> createCompletionsGiven: aText [
@@ -23,6 +38,13 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 		source: aString
 		position: anInteger
 		sorter: BigramCompletionSorter new
+]
+
+{ #category : #utilities }
+CompletionEvaluation >> evaluateAccuracy [
+	| matches |
+	matches := self calculateCompletionEvaluation.
+	^ { countSuccess/countAll asFloat . matches }
 ]
 
 { #category : #utilities }
@@ -48,24 +70,19 @@ CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentence
 	"for each valid part of the method record whether the correct completion was found.
 	and if so, additionally record its position"
 	| results props |
+	countSuccess := 0.
+	countAll := 0.
 	results := aSentenceList withIndexCollect: [ :text :i |
 		props := self createCompletionsGiven: text.
 		(props includes: (aCompletionList at: i)) 
-			ifTrue: [ { aCompletionList at: i. true . props indexOf: (aCompletionList at: i) } ]
-			ifFalse: [ { aCompletionList at: i. false . false } ] ].
+			ifTrue: [ 
+				countSuccess := countSuccess + 1.
+				countAll := countAll + 1.
+				{ aCompletionList at: i. true . props indexOf: (aCompletionList at: i) } ]
+			ifFalse: [ 
+				countAll := countAll + 1.
+				{ aCompletionList at: i. false . false } ] ].
 	^ results
-]
-
-{ #category : #utilities }
-CompletionEvaluation >> recordResults [
-	| sentences completions tokens methods matches |
-	tokens := self tokensFromClass: FrequencyCompletionSorter.
-	matches := tokens collect: [ :method |
-		methods := self getCompletionSequences: method from: 2 to: 8.
-		sentences := methods collect: [ :each | each first ].
-		completions := methods collect: [ :each | each second ].
-		self matchCorrectCompletions: completions from: sentences ].
-	^ matches
 ]
 
 { #category : #utilities }
