@@ -12,14 +12,28 @@ Class {
 }
 
 { #category : #utilities }
+CompletionEvaluation >> averageSuccessRatio [
+	| sumS sumA |
+	sumS := 0.
+	sumA := 0.
+	countSuccess do: [ :each | sumS := sumS + each ].
+	countAll do: [ :each | sumA := sumA + each ].
+	^ (sumS / sumA) asFloat
+]
+
+{ #category : #utilities }
 CompletionEvaluation >> calculateCompletionEvaluation [
-	| sentences completions tokens methods |
+	| sentences completions tokens methods results |
 	tokens := self tokensFromClass: FrequencyCompletionSorter.
+	results := OrderedCollection new.
 	^ tokens collect: [ :method |
 		methods := self getCompletionSequences: method from: 2 to: 8.
+		countAll add: methods size.
 		sentences := methods collect: [ :each | each first ].
 		completions := methods collect: [ :each | each second ].
-		self matchCorrectCompletions: completions from: sentences ]
+		results := (self matchCorrectCompletions: completions from: sentences).
+		countSuccess add: results size.
+		results ]
 ]
 
 { #category : #utilities }
@@ -42,9 +56,7 @@ CompletionEvaluation >> createContextFor: aString at: anInteger [
 
 { #category : #utilities }
 CompletionEvaluation >> evaluateAccuracy [
-	| matches |
-	matches := self calculateCompletionEvaluation.
-	^ { countSuccess/countAll asFloat . matches }
+	^ { self calculateCompletionEvaluation . self averageSuccessRatio }
 ]
 
 { #category : #utilities }
@@ -66,22 +78,22 @@ CompletionEvaluation >> getCompletionSequences: aList from: aStart to: anEnd [
 ]
 
 { #category : #utilities }
+CompletionEvaluation >> initialize [
+	countAll := OrderedCollection new.
+	countSuccess := OrderedCollection new.
+]
+
+{ #category : #utilities }
 CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentenceList [
 	"for each valid part of the method record whether the correct completion was found.
 	and if so, additionally record its position"
 	| results props |
-	countSuccess := 0.
-	countAll := 0.
-	results := aSentenceList withIndexCollect: [ :text :i |
+	results := OrderedCollection new.
+	aSentenceList withIndexDo: [ :text :i |
 		props := self createCompletionsGiven: text.
 		(props includes: (aCompletionList at: i)) 
 			ifTrue: [ 
-				countSuccess := countSuccess + 1.
-				countAll := countAll + 1.
-				{ aCompletionList at: i. true . props indexOf: (aCompletionList at: i) } ]
-			ifFalse: [ 
-				countAll := countAll + 1.
-				{ aCompletionList at: i. false . false } ] ].
+				results add: { aCompletionList at: i. props indexOf: (aCompletionList at: i) } ] ].
 	^ results
 ]
 

@@ -36,6 +36,7 @@ CompletionEvaluationTest >> testGetCorrectCompletions [
 { #category : #tests }
 CompletionEvaluationTest >> testMatchingCorrectCompletions [
 	| results tokens sentences methods completions |
+	self skip.
 	tokens := (evaluator tokensFromClass: FrequencyCompletionSorter) second.
 	methods := evaluator getCompletionSequences: tokens from: 3 to: 3.
 	sentences := methods collect: [ :each | each first ].
