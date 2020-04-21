@@ -91,9 +91,14 @@ CompletionEvaluation >> matchCorrectCompletions: aCompletionList from: aSentence
 	results := OrderedCollection new.
 	aSentenceList withIndexDo: [ :text :i |
 		props := self createCompletionsGiven: text.
-		(props includes: (aCompletionList at: i)) 
-			ifTrue: [ 
-				results add: { aCompletionList at: i. props indexOf: (aCompletionList at: i) } ] ].
+		props size >= 10 ifTrue: [
+			((props first: 10) includes: (aCompletionList at: i)) ifTrue: [ 
+				results add: { aCompletionList at: i.
+									props indexOf: (aCompletionList at: i) } ] ]
+							ifFalse: [
+			(props includes: (aCompletionList at: i)) ifTrue: [ 
+				results add: { aCompletionList at: i.
+									props indexOf: (aCompletionList at: i) } ] ] ].
 	^ results
 ]
 
