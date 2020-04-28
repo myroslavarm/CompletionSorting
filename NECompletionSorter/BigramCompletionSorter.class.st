@@ -14,7 +14,14 @@ Class {
 
 { #category : #accessing }
 BigramCompletionSorter >> getWordBefore [
-	^ context source wordBefore: context position  - context completionToken size - 1
+	| history visitor tokens |
+	visitor := SubtokensCollectingVisitor new.
+	tokens := (visitor visitNode: context ast) tokens.
+	tokens isEmpty ifTrue: [ ^ '' ].
+	history := tokens size > 1
+		ifTrue: [ (tokens allButLast: 1) last ]
+		ifFalse: [ tokens last ].
+	^ history
 ]
 
 { #category : #sorting }

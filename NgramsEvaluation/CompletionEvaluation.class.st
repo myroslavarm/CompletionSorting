@@ -24,7 +24,7 @@ CompletionEvaluation >> averageSuccessRatio [
 { #category : #utilities }
 CompletionEvaluation >> calculateCompletionEvaluation [
 	| sentences completions tokens methods results |
-	tokens := self tokensFromClass: FrequencyCompletionSorter.
+	tokens := self tokensFromClass: OrderedCollection.
 	results := OrderedCollection new.
 	^ tokens collect: [ :method |
 		methods := self getCompletionSequences: method from: 2 to: 8.

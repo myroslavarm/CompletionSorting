@@ -1,6 +1,11 @@
 Extension { #name : #CompletionContext }
 
 { #category : #'*NECompletionSorter' }
+CompletionContext >> ast [
+	^ ast
+]
+
+{ #category : #'*NECompletionSorter' }
 CompletionContext >> position [
 	^ position
 ]
