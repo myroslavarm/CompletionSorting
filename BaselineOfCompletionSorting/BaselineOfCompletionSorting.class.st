@@ -17,7 +17,9 @@ BaselineOfCompletionSorting >> baselineOf: spec [
 			baseline: 'GitBridge' with: [ spec
 				repository: 'github://jecisc/GitBridge:v1.x.x/src' ];
 			baseline: 'NgramModel' with: [ spec
-				repository: 'github://pharo-ai/NgramModel/src' ].
+				repository: 'github://pharo-ai/NgramModel/src' ];
+			baseline: 'PharoCodeTokenizer' with: [ spec
+				repository: 'github://olekscode/PharoCodeTokenizer/src' ].
 		spec
 			package: 'Ngrams' with: [ spec requires: #(GitBridge) ];
 			package: 'NECompletionSorter' with: [ spec requires: #(Ngrams) ];
