@@ -15,7 +15,7 @@ Class {
 { #category : #accessing }
 BigramCompletionSorter >> getWordBefore [
 	| history visitor tokens |
-	visitor := SubtokensCollectingVisitor new.
+	visitor := TokensCollectingVisitor new.
 	tokens := (visitor visitNode: context ast) tokens.
 	tokens isEmpty ifTrue: [ ^ '' ].
 	history := tokens size > 1
