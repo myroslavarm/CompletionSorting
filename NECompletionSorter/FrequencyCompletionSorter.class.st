@@ -16,10 +16,16 @@ FrequencyCompletionSorter class >> kind [
 	^ 'experimental'
 ]
 
+{ #category : #utilities }
+FrequencyCompletionSorter >> frequencies [
+
+	^ UnigramTableCreator new readFile
+]
+
 { #category : #sorting }
 FrequencyCompletionSorter >> initialize [
 	sorter := FrequencySorter new.
-	sorter frequencies: Unigram uniqueInstance frequencies
+	sorter frequencies: self frequencies
 ]
 
 { #category : #sorting }

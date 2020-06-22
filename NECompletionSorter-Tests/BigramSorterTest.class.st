@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'sorter',
 		'model',
-		'bigram'
+		'completionSorter'
 	],
 	#category : #'NECompletionSorter-Tests'
 }
@@ -13,8 +13,8 @@ Class {
 BigramSorterTest >> setUp [
 	super setUp.
 	sorter := BigramSorter new.
-	bigram := Bigram new.
-	model := bigram readFile
+	completionSorter := BigramCompletionSorter new.
+	model := completionSorter model
 	
 ]
 
@@ -31,7 +31,7 @@ BigramSorterTest >> testSortOfAST [
 	completionToken := node completionToken: position.
 	
 	collection := { 'new' . 'Object' . '<num>' . 'self' . '<str>' }.
-	probabilities := bigram probabilitiesFromModel: model 
+	probabilities := completionSorter probabilitiesFromModel: model 
 					history: (source wordBefore: position  - completionToken size - 1)
 					andCollection: collection.
 	actual := (sorter probabilities: probabilities) sort: collection.
@@ -45,7 +45,7 @@ BigramSorterTest >> testSortOfAST [
 BigramSorterTest >> testSortOfPunctuationAsHistory [
 	| collection probabilities actual expected |
 	collection := { 'new' . 'Object' . '<num>' . 'self' . '<str>' }.
-	probabilities := bigram probabilitiesFromModel: model
+	probabilities := completionSorter probabilitiesFromModel: model
 					history: '.'
 					andCollection: collection.
 	actual := (sorter probabilities: probabilities) sort: collection.
@@ -59,7 +59,7 @@ BigramSorterTest >> testSortOfPunctuationAsHistory [
 BigramSorterTest >> testSortWithRegularData [
 	| collection probabilities actual expected |
 	collection := { 'new' . 'hello' . 'new:' . 'newFrom:' . 'needsSlotClassDefinition'}.
-	probabilities := bigram probabilitiesFromModel: model
+	probabilities := completionSorter probabilitiesFromModel: model
 					history: 'OrderedCollection'
 					andCollection: collection.
 	actual := (sorter probabilities: probabilities) sort: collection.

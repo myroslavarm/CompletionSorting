@@ -6,8 +6,7 @@ Class {
 	#superclass : #CompletionSorter,
 	#instVars : [
 		'sorter',
-		'model',
-		'bigram'
+		'model'
 	],
 	#category : #NECompletionSorter
 }
@@ -28,14 +27,33 @@ BigramCompletionSorter >> getWordBefore [
 BigramCompletionSorter >> initialize [
 
 	sorter := BigramSorter new.
-	bigram := Bigram new.
-	model := bigram readFile
+	model := self model
+]
+
+{ #category : #accessing }
+BigramCompletionSorter >> model [
+
+	^ NgramModel readFromFile: (TokenProcessing dataFolder / BigramTableCreator new bigramFile)
+]
+
+{ #category : #accessing }
+BigramCompletionSorter >> probabilitiesFromModel: aModel history: aHistory andCollection: anOrderedCollection [
+	| collection ngrams probabilities |
+	collection := anOrderedCollection collect: [ :each | each contents asString ].
+	ngrams := aHistory = ''
+		ifTrue: [ collection collect: [ :each |
+				(Character space join: { '<s>' . each }) ] ]
+		ifFalse: [ collection collect: [ :each |
+				(Character space join: { aHistory . each }) ] ].
+	probabilities := ngrams collect: [ :each | (each substrings second) ->
+		(aModel probabilityOfNgram: (each substrings asArray asNgram)) ].
+	^ probabilities asDictionary
 ]
 
 { #category : #sorting }
 BigramCompletionSorter >> sortCompletionList: anOrderedCollection [
 	| probabilities |
-	probabilities := bigram probabilitiesFromModel: model
+	probabilities := self probabilitiesFromModel: model
 					history: self getWordBefore
 					andCollection: anOrderedCollection. 
 	sorter probabilities: probabilities.

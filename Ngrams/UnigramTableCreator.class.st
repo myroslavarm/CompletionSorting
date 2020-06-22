@@ -18,6 +18,20 @@ UnigramTableCreator >> frequencies [
 ]
 
 { #category : #transforming }
+UnigramTableCreator >> readFile [
+	| frequencies dict |
+	frequencies := TokenProcessing frequenciesFile readStreamDo: [ :readStream |
+		(NeoCSVReader on: readStream)
+			skipHeader;
+			addField;
+			addIntegerField;
+			upToEnd ].
+	dict := Dictionary new.
+	frequencies do: [ :each | dict at: each first put: each second ].
+	^ dict 
+]
+
+{ #category : #transforming }
 UnigramTableCreator >> writeToFile [
 	| data stream |
 	data := self frequencies.
